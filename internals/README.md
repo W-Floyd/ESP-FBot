@@ -6,7 +6,7 @@ I have a AFERIY P310 that is stuck in a reboot loop, likely because a bad settin
 
 Obviously, this is a barrery with a lot of power and a huge inverter so, be super careful when doing this. The first step to to remove the top of the device. There are a set of rubber plugs and two rubber strips that are easy to remove. After that, remove all of the screws and remove the top of the device. I then removed the sides. The sides are a bit more difficult to remove as there are healed at two snap-in locations at the bottom. Once you know these locations it's easier to un-snap and pull up. There is the battery with the top and sides removed.
 
-![AFERIY P310 Opened up](https://github.com/Ylianst/ESP-FBot/blob/main/internals/images/battery-opened.jpeg)
+<img src="images/battery-opened.jpeg" alt="AFERIY P310 Opened up" width="400"/>
 
 I kept a small bag with all of the screws. Luckly it's very clear what goes where. You can then easily pull the front motherboard out. If you take your voltmeter out and test around, you will see there are two bars that are exposed with 48v on them. So again, be super careful if you do this.
 
@@ -14,21 +14,21 @@ I kept a small bag with all of the screws. Luckly it's very clear what goes wher
 
 There is while glue to make sure nothing gets disconnected during transport. You have to disconnect 3 white connectors and 1 power connection from the main board. Here is what it looks like:
 
-<img src="images/board-top.jpeg" alt="AFERIY P310 Motherboard Image" width="200"/>
+<img src="images/board-top.jpeg" alt="AFERIY P310 Motherboard Image" width="400"/>
 
 At the bottom of the board, I see the following indication:
 
-![AFERIY P310 Board Indication](https://github.com/Ylianst/ESP-FBot/blob/main/internals/images/board-number.png)
+<img src="images/board-number.png" alt="AFERIY P310 Board Indication" width="400"/>
 
 It says "SYD-N051-DC-V1.5" on the first line and "20230915" on the second line. You can immidiately see that this is a board from [Shenzhen SYD Network Technology Co. Ltd.](https://sydpower.com/) and on their web site there is a range of batteries that you can get and brand anyway you like. This is the original source of the battery with AFERIY and others re-branding it.
 
 It looks like the board is run by an ARM Cortex processor, but you can see that they took extra care to black out all of the chips so to make them more difficult to identify. Ont he top left you can see the typical ARM debug port with 4 connectors (3.3v, GND, SWCLK, SWDIO on the J13 connector).
 
-![AFERIY P310 Board Indication](https://github.com/Ylianst/ESP-FBot/blob/main/internals/images/board-debug-port.jpeg)
+<img src="images/board-debug-port.jpeg" alt="AFERIY P310 Board Debug Port" width="400"/>
 
 On the top right of the motherboard is the ESP32 chip that does WIFI and Bluetooth. The 2.4Ghz antenna is the small wiggle in the black area.
 
-![AFERIY P310 ESP32](https://github.com/Ylianst/ESP-FBot/blob/main/internals/images/board-esp32.jpeg)
+<img src="images/board-esp32.jpeg" alt="AFERIY P310 ESP32" width="400"/>
 
 This is a `ESP32-C3-MINI-1 M4N4`, you can find the [documentation for this chip here](https://documentation.espressif.com/esp32-c3-mini-1_datasheet_en.pdf). Going with a voltmeter and just testing the pins, I think this are the pin connections for the ESP32:
 
