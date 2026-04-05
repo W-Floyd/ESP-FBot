@@ -57,36 +57,78 @@ You can find my [PulseView capture files here](https://github.com/Ylianst/ESP-FB
 
 It turns out the ARM Cortex chip talks to the ESP32 using standard 115200,N,8,1 serial settings and using standard "AT" commands. It seems like the ESP32 is loaded with a standard "proxy" firmware from Espressif and documentation of the AT commands is here: [Espressif AT Command Set](https://docs.espressif.com/projects/esp-at/en/latest/esp32/AT_Command_Set/Basic_AT_Commands.html) In PulseView, you can use the UART decoder to see all of the messages.
 
-So, the ARM chip instructs the ESP32 to enable it's Bluetooth, WIFI and more over a standard serial port. All the AT commands are in ASCII format and easy to read and understand. In my case, my battery is in a reset loop, but here is the conversation between the ARM chip and the ESP32 on each reboot loop. I added "ARM:" for commands sent by the ARM chip to the ESP32 and "ESP:" for data coming from the ESP32.
+So, the ARM chip instructs the ESP32 to enable it's Bluetooth, WIFI and more over a standard serial port. All the AT commands are in ASCII format and easy to read and understand. Here is the initial conversation between the ARM chip and the ESP32, this gets the Bluetooth ready for connections. I added "ARM:" for commands sent by the ARM chip to the ESP32 and "ESP:" for data coming from the ESP32.
 
 ```
-ARM: AT+RST
-ESP: ready
-ARM: AT
-ESP: AT
-ESP: OK
-ARM: AT+BLEINIT=2
-ESP: AT+BLEINIT=2
-ESP: OK
-ARM: AT+SYSMSG=7
-ESP: AT+SYSMSG=7
-ESP: OK
-ARM: AT+CWRECONNCFG=10,0
-ESP: AT+CWRECONNCFG=10,0
-ESP: OK
-ARM: AT+BLEGATTSSRVCRE
-ESP: AT+BLEGATTSSRVCRE
-ESP: OK
-ARM: AT+BLEGATTSSRVSTART
-ESP: AT+BLEGATTSSRVSTART
-ESP: OK
-ARM: AT+BLEADDR?
-ESP: AT+BLEADDR?
-ESP: +BLEADDR:"a8:46:74:41:4c:42"
-ESP: OK
-ARM: AT+BLEADVDATAEX="POWER-7E83","7e83","99A84674414C4200",1
-ESP: AT+BLEADVDATAEX="POWER-7E83","7e83","99A84674414C4200",1
-ESP: OK
+ARM: AT+RST\r\n                          <-- ARM tells the ESP32 to restart
+ESP: \r\nready\r\n                       <-- ESP32 is ready
+ARM: AT\r\n                              <-- Simple ping/pong
+ESP: AT\r\n
+ESP: \r\nOK\r\n
+ARM: AT+BLEINIT=2\r\n                    <-- Initializes the BLE stack. The value 2 sets the ESP32 as a Server.
+ESP: AT+BLEINIT=2\r\n
+ESP: \r\nOK\r\n
+ARM: AT+SYSMSG=7\r\n                     <-- Value 7 tells the ESP32 to notify the ARM chip about BLE connection and disconnection events.
+ESP: AT+SYSMSG=7\r\n
+ESP: \r\nOK\r\n
+ARM: AT+CWRECONNCFG=10,0\r\n             <-- Wi-Fi command, try reconnecting to Wi-Fi 10 times if it loses a connection.
+ESP: AT+CWRECONNCFG=10,0\r\n
+ESP: \r\nOK\r\n
+ARM: AT+BLEGATTSSRVCRE\r\n               <-- GATT Server Create. This tells the ESP32 to build the database of services in its memory.
+ESP: AT+BLEGATTSSRVCRE\r\n
+ESP: \r\nOK\r\n
+ARM: AT+BLEGATTSSRVSTART\r\n             <-- GATT Server Start. This officially launches the services so they are active and ready for a client to read/write.
+ESP: AT+BLEGATTSSRVSTART\r\n
+ESP: \r\nOK\r\n
+ARM: AT+BLEADDR?\r\n                     <-- ARM requests the Bluetooth MAC address
+ESP: AT+BLEADDR?\r\n
+ESP: +BLEADDR:"a8:46:74:41:4c:42"\r\nOK\r\n
+ARM: AT+BLEADVDATAEX="POWER-7E83","7e83","99A84674414C4200",1\r\n    <-- Broadcast a Bluetooh advertising packets
+ESP: AT+BLEADVDATAEX="POWER-7E83","7e83","99A84674414C4200",1\r\n
+ESP: \r\nOK\r\n
 ```
 
-You notice that except for the initial reset command, the ESP32 will echo back the command it received from the ARM chip and then respond to it. You can see a bunch of "BLE" (Bluetooth) messages to get Bluetooth started.
+You notice that except for the initial reset command, the ESP32 will echo back the command it received from the ARM chip and then respond to it. You can see a bunch of "BLE" (Bluetooth) messages to get Bluetooth started. At this point, the battery is ready to receive Bluetooth messages. Let's now see what connecting a Bluetooth clients does. I am going to use a HomeAssistant ESP-FBot ESP32 as client to connect to the battery:
+
+```
+ESP: +BLECONN:0,"f0:24:f9:bb:d3:ca"\r\n          <-- Bluetooth client connection
+
+ARM: AT+BLEGATTSNTFY=0,1,6,168\r\n               <-- Client get initial block of data
+ESP: AT+BLEGATTSNTFY=0,1,6,168\r\n>
+ARM: (168 bytes of binary data)
+ESP: \r\nOK\r\n
+
+ESP: +BLECFGMTU:0,517\r\n                        <-- Client configures MTU to 517 bytes
+
+(This is a typical user command, like turn the battery's light on, off, etc)
+ESP: +WRITE:0,1,5,,8,(8 bytes of binary data, last 2 are CRC)\r\n
+ARM: AT+BLEGATTSNTFY=0,1,6,168\r\n
+ESP: AT+BLEGATTSNTFY=0,1,6,168\r\n>
+ARM: (168 bytes of binary data, last 2 are CRC)
+ESP: \r\nOK\r\n
+
+ESP: +BLEDISCONN:0,"f0:24:f9:bb:d3:ca"\r\n       <-- Bluetooth client disconnects
+```
+
+So, we have our Bluetooth client connecting, setting the MTU which is the "Maximum Transfer Unit" which is the largest packet it will accept. Then, you get a block of 168 bytes of data and the client can write data and get an updated state of 168 bytes. The next step is to look into the binary writes and notifications. Here is a typical "Write" and the response.
+
+ESP: +WRITE:0,1,5,,8,[11 04 00 00 00 50 A6 F2]\r\n   <-- Last 2 bytes are the CRC
+ARM: AT+BLEGATTSNTFY=0,1,6,168\r\n
+ESP: AT+BLEGATTSNTFY=0,1,6,168\r\n>
+ARM: (Sends 168 bytes of data, last 2 bytes is the CRC)
+04 00 00 00 50 00 00 00 00 00 02 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 AE 02 58 00 00 00 
+09 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 30 00 40 00 00 00 00 00 00 00 00 00 00 
+00 03 14 00 00 03 A5 00 00 00 00 AB F1 00 00 00 
+00 00 FF FF FF 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 8E B8 
+ESP: \r\nOK\r\n
+
+You can calculate the CRC using the [this CRC online calculator](https://www.codertools.net/tools/crc.php), you need to set the input format to "HEX" and CRC to "CRC-16/MODBUS". Then, paste the entire data packet except the last 2 bytes and you should get the last 2 bytes calculated correctly.
+
+The next step is to document the binary values, but this should match data we are collecting when talking over Bleutooth.
