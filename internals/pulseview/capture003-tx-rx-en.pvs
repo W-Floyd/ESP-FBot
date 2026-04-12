@@ -21,35 +21,35 @@ conv_options=0
 
 [D3]
 name=D3
-enabled=true
+enabled=false
 color=4294277376
 conversion_type=0
 conv_options=0
 
 [D4]
 name=D4
-enabled=true
+enabled=false
 color=4293776384
 conversion_type=0
 conv_options=0
 
 [D5]
 name=D5
-enabled=true
+enabled=false
 color=4285780502
 conversion_type=0
 conv_options=0
 
 [D6]
 name=D6
-enabled=true
+enabled=false
 color=4281623972
 conversion_type=0
 conv_options=0
 
 [D7]
 name=D7
-enabled=true
+enabled=false
 color=4285878395
 conversion_type=0
 conv_options=0
@@ -98,7 +98,7 @@ decoder0\ann_class17\visible=true
 channels=2
 channel0\name=RX
 channel0\initial_pin_state=2
-channel0\assigned_signal_name=D2
+channel0\assigned_signal_name=D0
 channel1\name=TX
 channel1\initial_pin_state=2
 channel1\assigned_signal_name=D1
@@ -110,11 +110,11 @@ views=1
 meta_objs=0
 
 [view0]
-scale=0.0214950273822563
-v_offset=-89
-splitter_state=@ByteArray(\0\0\0\xff\0\0\0\x1\0\0\0\x2\0\0\0\x42\0\0\x6\xdb\x1\0\0\0\x1\x1\0\0\0\x1\0)
-segment_display_mode=3
-offset=22 serialization::archive 14 0 0 0 0 0 0 0 0 0 0 0 0 0 6
+scale=0.0008348357530764438
+v_offset=-211
+splitter_state=@ByteArray(\0\0\0\xff\0\0\0\x1\0\0\0\x2\0\0\0\x42\0\0\x5\xeb\x1\0\0\0\x1\x1\0\0\0\x1\0)
+segment_display_mode=1
+offset=22 serialization::archive 14 0 0 0 0 23 8059329 78573361 17366037 6338349 23506120 0 0 0 6
 zero_offset=22 serialization::archive 14 0 0 0 0 0 0 0 0 0 0 0 0 0 6
 D0\trace_height=32
 D1\trace_height=32
