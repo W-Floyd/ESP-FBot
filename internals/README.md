@@ -53,7 +53,9 @@ I put the motherboard back into the battery and used a [cheap 10$ USB logic anal
 
 <img src="images/pulseview01.png" alt="PulseView Decoding" width="600"/>
 
-You can find my [PulseView capture files here](https://github.com/Ylianst/ESP-FBot/tree/main/internals/pulseview). "Capture001" was my first succesful capture of both TX and RX pins at a sampling rate that is way too high since I did not know what I would except. D4 is from the ARM to the ESP32, and D5 are the responses from the ESP32.
+You can find my [PulseView capture files from the boot looping battery here](https://github.com/Ylianst/ESP-FBot/tree/main/internals/pulseview). "Capture001" was my first succesful capture of both TX and RX pins at a sampling rate that is way too high since I did not know what I would except. D4 is from the ARM to the ESP32, and D5 are the responses from the ESP32. "Capture003" has both traffic directions and the ESP32 enable (EN) pin. This is very useful since you can see exacly the sequence of commands and the reboot of the ESP32 due to the lowering of the ESP32 enable line.
+
+I also have a set of [PulseView capture files from the good battery here](https://github.com/Ylianst/ESP-FBot/tree/main/internals/pulseview-good). You can see the full startup sequence in "Capture001", then me pressing the local button to turn on/off the AC/DC/USB power in "Capture002" and finally me sending commands over Bluetooth in "Capture003". This is interesting so you can see how the power station works in a normal situation. Next, we look at my analysis of the serial protocol.
 
 ## AT Serial Protocol
 
@@ -383,3 +385,11 @@ Looking at the sample data from the capture, some values can be extracted:
 - Register 41 at offset `6 + (41 × 2) = 88`: state flags — check bits for USB/DC/AC/Light state
 - Register 56 at offset `6 + (56 × 2) = 118`: battery percent — divide by 10 for %
 - Register 59 at offset `6 + (59 × 2) = 124`: remaining time in minutes
+
+### Performing a Serial Capture
+
+If you ever want to look at the traffic between the ARM and ESP32 chips, you can get a "CP2102 USB to TTL Serial Adapter" online and connect the RX wire of the adapter to the pins RX or TX pin of the ESP32. You can then run a terminal like Putty at 115400 bauds and see the traffic.
+
+<img src="images/board-esp32-serial.jpeg" alt="Looking at the serial traffic" width="400"/>
+
+You can only see one direction at a time (to the ESP32 or from the ESP32) but you will see the AT commands in text form on putty as they arrive. I personnaly manually hold the pins to the ESP32 pads since they are prety large and so, not difficult to do. Using a multi channel logic analyser is better since you get all of the timing data and data in both directions, but a simple serial adapter does work. You will not be able to transmit using your adapter, only receive.
