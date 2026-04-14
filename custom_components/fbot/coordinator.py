@@ -1,4 +1,5 @@
 """BLE coordinator for the Fbot integration."""
+
 from __future__ import annotations
 
 import asyncio
@@ -8,7 +9,6 @@ from datetime import timedelta
 
 from bleak import BleakClient
 from bleak_retry_connector import BleakClientWithServiceCache, establish_connection
-
 from homeassistant.components import bluetooth
 from homeassistant.components.bluetooth import (
     BluetoothCallbackMatcher,
@@ -22,71 +22,72 @@ from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .const import (
+    AC_CHARGE_LIMITS,
     DOMAIN,
+    KEY_AC_ACTIVE,
+    KEY_AC_CHARGE_LIMIT,
+    KEY_AC_IN_FREQUENCY,
+    KEY_AC_INPUT_POWER,
+    KEY_AC_OUT_FREQUENCY,
+    KEY_AC_OUT_VOLTAGE,
+    KEY_AC_SILENT,
+    KEY_BATTERY_PERCENT,
+    KEY_BATTERY_S1_CONNECTED,
+    KEY_BATTERY_S1_PERCENT,
+    KEY_BATTERY_S2_CONNECTED,
+    KEY_BATTERY_S2_PERCENT,
+    KEY_CHARGE_LEVEL,
+    KEY_DC_ACTIVE,
+    KEY_DC_INPUT_POWER,
+    KEY_INPUT_POWER,
+    KEY_KEY_SOUND,
+    KEY_LIGHT_ACTIVE,
+    KEY_LIGHT_MODE,
+    KEY_OUTPUT_POWER,
+    KEY_REMAINING_TIME,
+    KEY_SYSTEM_POWER,
+    KEY_THRESHOLD_CHARGE,
+    KEY_THRESHOLD_DISCHARGE,
+    KEY_TIME_TO_FULL,
+    KEY_TOTAL_POWER,
+    KEY_USB_A1_POWER,
+    KEY_USB_A2_POWER,
+    KEY_USB_ACTIVE,
+    KEY_USB_C1_POWER,
+    KEY_USB_C2_POWER,
+    KEY_USB_C3_POWER,
+    KEY_USB_C4_POWER,
+    LIGHT_MODES,
     NOTIFY_CHAR_UUID,
-    WRITE_CHAR_UUID,
+    REG_AC_CHARGE_LIMIT,
+    REG_AC_SILENT_CONTROL,
+    REG_KEY_SOUND,
+    REG_LIGHT_CONTROL,
+    REG_THRESHOLD_CHARGE,
+    REG_THRESHOLD_DISCHARGE,
     REG_USB_A1_OUT,
     REG_USB_A2_OUT,
     REG_USB_C1_OUT,
     REG_USB_C2_OUT,
     REG_USB_C3_OUT,
     REG_USB_C4_OUT,
-    REG_AC_SILENT_CONTROL,
-    REG_KEY_SOUND,
-    REG_LIGHT_CONTROL,
-    REG_AC_CHARGE_LIMIT,
-    REG_THRESHOLD_DISCHARGE,
-    REG_THRESHOLD_CHARGE,
-    STATE_USB_BIT,
-    STATE_DC_BIT,
     STATE_AC_BIT,
+    STATE_DC_BIT,
     STATE_LIGHT_BIT,
-    KEY_BATTERY_PERCENT,
-    KEY_BATTERY_S1_PERCENT,
-    KEY_BATTERY_S2_PERCENT,
-    KEY_BATTERY_S1_CONNECTED,
-    KEY_BATTERY_S2_CONNECTED,
-    KEY_AC_INPUT_POWER,
-    KEY_DC_INPUT_POWER,
-    KEY_INPUT_POWER,
-    KEY_OUTPUT_POWER,
-    KEY_SYSTEM_POWER,
-    KEY_TOTAL_POWER,
-    KEY_REMAINING_TIME,
-    KEY_CHARGE_LEVEL,
-    KEY_AC_OUT_VOLTAGE,
-    KEY_AC_OUT_FREQUENCY,
-    KEY_AC_IN_FREQUENCY,
-    KEY_TIME_TO_FULL,
-    KEY_USB_A1_POWER,
-    KEY_USB_A2_POWER,
-    KEY_USB_C1_POWER,
-    KEY_USB_C2_POWER,
-    KEY_USB_C3_POWER,
-    KEY_USB_C4_POWER,
-    KEY_USB_ACTIVE,
-    KEY_DC_ACTIVE,
-    KEY_AC_ACTIVE,
-    KEY_LIGHT_ACTIVE,
-    KEY_THRESHOLD_CHARGE,
-    KEY_THRESHOLD_DISCHARGE,
-    KEY_AC_SILENT,
-    KEY_KEY_SOUND,
-    KEY_LIGHT_MODE,
-    KEY_AC_CHARGE_LIMIT,
-    LIGHT_MODES,
-    AC_CHARGE_LIMITS,
+    STATE_USB_BIT,
+    WRITE_CHAR_UUID,
 )
 
 _LOGGER = logging.getLogger(__name__)
 
-_POLLING_INTERVAL = timedelta(seconds=2)
+_POLLING_INTERVAL = timedelta(seconds=5)
 _SETTINGS_INTERVAL = timedelta(seconds=60)
 
 
 # ---------------------------------------------------------------------------
 # Protocol helpers
 # ---------------------------------------------------------------------------
+
 
 def _crc16_modbus(data: bytes) -> int:
     """CRC-16 Modbus variant (polynomial 0xA001, initial value 0xFFFF)."""
@@ -118,11 +119,18 @@ def _build_read_settings() -> bytes:
 
 def _build_write_command(reg: int, value: int) -> bytes:
     """Write single holding register (function code 0x06)."""
-    return _frame(bytes([
-        0x11, 0x06,
-        (reg >> 8) & 0xFF, reg & 0xFF,
-        (value >> 8) & 0xFF, value & 0xFF,
-    ]))
+    return _frame(
+        bytes(
+            [
+                0x11,
+                0x06,
+                (reg >> 8) & 0xFF,
+                reg & 0xFF,
+                (value >> 8) & 0xFF,
+                value & 0xFF,
+            ]
+        )
+    )
 
 
 def _get_reg(data: bytes, idx: int) -> int:
@@ -142,8 +150,12 @@ def _parse_status(data: bytes) -> dict | None:
     battery_s2_raw = _get_reg(data, 55)
 
     # Extra batteries report 0 when disconnected; subtract 1 to normalise range.
-    battery_s1_pct: float | None = battery_s1_raw / 10.0 - 1.0 if battery_s1_raw > 0 else None
-    battery_s2_pct: float | None = battery_s2_raw / 10.0 - 1.0 if battery_s2_raw > 0 else None
+    battery_s1_pct: float | None = (
+        battery_s1_raw / 10.0 - 1.0 if battery_s1_raw > 0 else None
+    )
+    battery_s2_pct: float | None = (
+        battery_s2_raw / 10.0 - 1.0 if battery_s2_raw > 0 else None
+    )
 
     if battery_s1_pct is not None and not 0.0 <= battery_s1_pct <= 100.0:
         battery_s1_pct = None
@@ -151,7 +163,9 @@ def _parse_status(data: bytes) -> dict | None:
         battery_s2_pct = None
 
     charge_level_raw = _get_reg(data, 2)
-    charge_level_watts = (300 + (charge_level_raw - 1) * 200) if 1 <= charge_level_raw <= 5 else 0
+    charge_level_watts = (
+        (300 + (charge_level_raw - 1) * 200) if 1 <= charge_level_raw <= 5 else 0
+    )
 
     state_flags = _get_reg(data, 41)
 
@@ -192,7 +206,11 @@ def _parse_settings(data: bytes) -> dict | None:
         return None
 
     light_mode_raw = _get_reg(data, REG_LIGHT_CONTROL)
-    light_mode = LIGHT_MODES[light_mode_raw] if light_mode_raw < len(LIGHT_MODES) else LIGHT_MODES[0]
+    light_mode = (
+        LIGHT_MODES[light_mode_raw]
+        if light_mode_raw < len(LIGHT_MODES)
+        else LIGHT_MODES[0]
+    )
 
     ac_charge_limit_raw = _get_reg(data, REG_AC_CHARGE_LIMIT)
     ac_charge_limit = (
@@ -214,6 +232,7 @@ def _parse_settings(data: bytes) -> dict | None:
 # ---------------------------------------------------------------------------
 # Coordinator
 # ---------------------------------------------------------------------------
+
 
 class FbotCoordinator(DataUpdateCoordinator[dict]):
     """Manages the BLE connection and data for a single Fbot device."""
@@ -270,7 +289,9 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
         if ble_device is not None:
             await self._async_connect(ble_device)
         else:
-            _LOGGER.debug("Fbot %s not in range, waiting for advertisement", self._address)
+            _LOGGER.debug(
+                "Fbot %s not in range, waiting for advertisement", self._address
+            )
             self._register_advertisement_listener()
 
     async def _async_connect(self, ble_device) -> None:
