@@ -1,0 +1,72 @@
+[
+  {
+    "address": 15,
+    "name": "smart_socket_power_arr",
+    "context": "Wu constants array",
+    "line": 25775,
+    "snippet": "Wu.smart_socket_power_arr = [15]"
+  },
+  {
+    "address": 0,
+    "name": "charge_custom_enable_arr",
+    "context": "Wu constants array",
+    "line": 25775,
+    "snippet": "Wu.charge_custom_enable_arr = [0]"
+  },
+  {
+    "address": 4,
+    "name": "grid_custom_enable_arr",
+    "context": "Wu constants array",
+    "line": 25775,
+    "snippet": "Wu.grid_custom_enable_arr = [4]"
+  },
+  {
+    "address": 52,
+    "name": "grid_custom_startEnd_time_arr",
+    "context": "Wu constants array",
+    "line": 25775,
+    "snippet": "Wu.grid_custom_startEnd_time_arr = [52]"
+  },
+  {
+    "address": 53,
+    "name": "grid_custom_powerPeriod_arr",
+    "context": "Wu constants array",
+    "line": 25775,
+    "snippet": "Wu.grid_custom_powerPeriod_arr = [53]"
+  },
+  {
+    "address": 68,
+    "name": "grid_discharge_end_soc_arr",
+    "context": "Wu constants array",
+    "line": 25775,
+    "snippet": "Wu.grid_discharge_end_soc_arr = [68]"
+  },
+  {
+    "address": 38,
+    "name": "charge_custom_startEnd_time_arr",
+    "context": "Wu constants array",
+    "line": 25775,
+    "snippet": "Wu.charge_custom_startEnd_time_arr = [38]"
+  },
+  {
+    "address": 39,
+    "name": "charge_custom_energySOC_arr",
+    "context": "Wu constants array",
+    "line": 25775,
+    "snippet": "Wu.charge_custom_energySOC_arr = [39]"
+  },
+  {
+    "address": 40,
+    "name": "charge_custom_period_arr",
+    "context": "Wu constants array",
+    "line": 25775,
+    "snippet": "Wu.charge_custom_period_arr = [40]"
+  },
+  {
+    "address": 80,
+    "name": "socket_meter_bind_arr",
+    "context": "Wu constants array",
+    "line": 25775,
+    "snippet": "Wu.socket_meter_bind_arr = [80]"
+  }
+]

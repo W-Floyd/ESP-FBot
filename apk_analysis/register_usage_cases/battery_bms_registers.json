@@ -1,0 +1,92 @@
+[
+  {
+    "address": "74",
+    "name": "smartSocketRelayAndWiFi",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "84",
+    "name": "LowBatteryNotification",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "10",
+    "name": "smartSocketMeter_firmware_version_count",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "26",
+    "name": "discharge_SOC_min_limit",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "26",
+    "name": "discharge_soc_min_limit",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "31",
+    "name": "ECO_SOC_min_limit",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "32",
+    "name": "dod_deep_discharge",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "35",
+    "name": "grid_immediate_EndSOC",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "37",
+    "name": "charge_immediate_energySOC",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "101",
+    "name": "smartSocketMeter_firmware_upgrade_type_link_function_code",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "101",
+    "name": "socket_firmware_address_min",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "100",
+    "name": "smartSocketMeter_firmware_version_address",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "100",
+    "name": "smartSocketMeter_firmware_version_function_code",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "102",
+    "name": "smartSocketMeter_firmware_upgrade_type_pack_function_code",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "109",
+    "name": "socket_meter_firmware_address_max",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "104",
+    "name": "socket_firmware_address_max",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "27",
+    "name": "ups_charge_soc_max_limit",
+    "description": "Battery BMS status registers"
+  },
+  {
+    "address": "48",
+    "name": "BMS_Version",
+    "description": "Battery BMS status registers"
+  }
+]

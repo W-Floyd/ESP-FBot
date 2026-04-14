@@ -1,0 +1,12 @@
+[
+  {
+    "address": "0",
+    "name": "reset_to_factory",
+    "description": "System control register (reset, debug)"
+  },
+  {
+    "address": "1",
+    "name": "debug_mode",
+    "description": "System control register (reset, debug)"
+  }
+]

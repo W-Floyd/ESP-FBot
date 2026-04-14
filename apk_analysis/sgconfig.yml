@@ -1,0 +1,6 @@
+ruleDirs:
+- /Users/william/Documents/Personal/git/ESP-FBot/apk_analysis/rules
+testConfigs:
+- testDir: /Users/william/Documents/Personal/git/ESP-FBot/apk_analysis/rule-tests
+utilDirs:
+- /Users/william/Documents/Personal/git/ESP-FBot/apk_analysis/utils

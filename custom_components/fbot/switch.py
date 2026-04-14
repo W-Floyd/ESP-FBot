@@ -1,26 +1,20 @@
-"""Switch platform for the Fbot integration."""
+"""Switch platform for the BrightEMS fbot integration."""
 
 from __future__ import annotations
+
+import logging
+from typing import Any
 
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, translate
-from .coordinator import FbotCoordinator
-from .product_catalog import FEATURES
+from . import FbotCoordinator, FbotEntity
+from .const import DOMAIN
+from .product_catalog import CATEGORIES, FEATURES
 
-
-def _device_info(coordinator: FbotCoordinator) -> DeviceInfo:
-    return DeviceInfo(
-        identifiers={(DOMAIN, coordinator.address)},
-        name=coordinator._device_name or "Fbot Device",
-        manufacturer="BrightEMS / Sydpower",
-        model=coordinator.profile.device_type,
-    )
+_LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(
@@ -28,56 +22,28 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
+    """Set up the switch platform."""
     coordinator: FbotCoordinator = hass.data[DOMAIN][entry.entry_id]
-    features = FEATURES.get(coordinator.profile.product_id, {"states": [], "settings": []})
-    async_add_entities(
-        FbotCatalogSwitch(coordinator, state)
-        for state in features["states"]
-        # A state needs both a holding register (to write on/off) and an input
-        # register (to read back the current state).
-        if state.get("holding_index") is not None and state.get("input_index") is not None
-    )
+    entities = []
 
+    # Get device features from catalog
+    device_uuid = coordinator.device_info.get("uuid", "")
+    product_key = f"{device_uuid.upper()}_SYDPOWER"
 
-class FbotCatalogSwitch(CoordinatorEntity[FbotCoordinator], SwitchEntity):
-    """A switch entity for a catalog-defined output group.
+    if product_key in FEATURES:
+        features = FEATURES[product_key]
+        for setting in features.get("settings", []):
+            # Create switch entities for writable settings
+            if setting.get("holding_index") is not None:
+                entities.append(
+                    FbotSwitch(
+                        coordinator=coordinator,
+                        setting_id=setting["id"],
+                        name=setting.get("function_name", "Unknown"),
+                        holding_index=setting["holding_index"],
+                        unit=setting.get("unit", ""),
+                    )
+                )
 
-    The switch controls the entire group (e.g. "USB Output").  Individual
-    sub-outputs within the group are exposed as binary sensors (children).
-    """
-
-    _attr_has_entity_name = True
-
-    def __init__(self, coordinator: FbotCoordinator, state: dict) -> None:
-        super().__init__(coordinator)
-        self._state = state
-        self._read_key = f"i_{state['input_index']}"
-        self._attr_name = translate(state["function_name"])
-        self._attr_unique_id = f"{coordinator.address}_state_{state['id']}"
-        self._attr_device_info = _device_info(coordinator)
-
-    @property
-    def available(self) -> bool:
-        return super().available and self._read_key in (self.coordinator.data or {})
-
-    @property
-    def is_on(self) -> bool | None:
-        val = (self.coordinator.data or {}).get(self._read_key)
-        if val is None:
-            return None
-        return bool(val)
-
-    async def async_turn_on(self, **kwargs) -> None:
-        await self.coordinator.async_send_command(self._state["holding_index"], 1)
-        self._attr_is_on = True
-        self.async_write_ha_state()
-
-    async def async_turn_off(self, **kwargs) -> None:
-        await self.coordinator.async_send_command(self._state["holding_index"], 0)
-        self._attr_is_on = False
-        self.async_write_ha_state()
-
-    def _handle_coordinator_update(self) -> None:
-        # Clear optimistic state once real data arrives.
-        self._attr_is_on = None
-        super()._handle_coordinator_update()
+    if entities:
+        async_add_entities(entities)

@@ -1,0 +1,27 @@
+[
+  {
+    "address": "99",
+    "name": "main_board_firmware_address_max",
+    "description": "Firmware upgrade addresses"
+  },
+  {
+    "address": "38",
+    "name": "firmware_function_code",
+    "description": "Firmware upgrade addresses"
+  },
+  {
+    "address": "38",
+    "name": "firmware_upgrade_type_pack_function_code",
+    "description": "Firmware upgrade addresses"
+  },
+  {
+    "address": "109",
+    "name": "meter_firmware_address_max",
+    "description": "Firmware upgrade addresses"
+  },
+  {
+    "address": "105",
+    "name": "meter_firmware_address_min",
+    "description": "Firmware upgrade addresses"
+  }
+]

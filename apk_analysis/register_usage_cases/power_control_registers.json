@@ -1,0 +1,137 @@
+[
+  {
+    "address": "0",
+    "name": "DC_charge_power",
+    "description": "Power-related configuration"
+  },
+  {
+    "address": "4",
+    "name": "AC_backup_output_onoff",
+    "description": "AC charging power control"
+  },
+  {
+    "address": "4",
+    "name": "AC_BackUp_Output_KEY_onoff",
+    "description": "AC charging power control"
+  },
+  {
+    "address": "4",
+    "name": "PV2_charge_power",
+    "description": "PV charging control"
+  },
+  {
+    "address": "5",
+    "name": "AC_Vol_Exist_status",
+    "description": "AC voltage/power monitoring"
+  },
+  {
+    "address": "5",
+    "name": "PV3_charge_power",
+    "description": "PV charging control"
+  },
+  {
+    "address": "6",
+    "name": "AC_charge_onoff",
+    "description": "AC charging power control"
+  },
+  {
+    "address": "6",
+    "name": "PV4_charge_power",
+    "description": "PV charging control"
+  },
+  {
+    "address": "6",
+    "name": "silent_charging_mode",
+    "description": "PV charging control"
+  },
+  {
+    "address": "8",
+    "name": "Low_PV_Vol_Exist_status",
+    "description": "PV charging control"
+  },
+  {
+    "address": "9",
+    "name": "Low_PV_charge_onoff",
+    "description": "PV charging control"
+  },
+  {
+    "address": "12",
+    "name": "High_PV_Vol_Exist_status",
+    "description": "PV charging control"
+  },
+  {
+    "address": "12",
+    "name": "AC_output_power",
+    "description": "AC voltage/power monitoring"
+  },
+  {
+    "address": "13",
+    "name": "High_PV_charge_onoff",
+    "description": "PV charging control"
+  },
+  {
+    "address": "11",
+    "name": "PV2_charge_onoff",
+    "description": "PV charging control"
+  },
+  {
+    "address": "7",
+    "name": "AC_grid_power",
+    "description": "AC voltage/power monitoring"
+  },
+  {
+    "address": "2",
+    "name": "AC_charge_power",
+    "description": "AC charging power control"
+  },
+  {
+    "address": "3",
+    "name": "PV1_charge_power",
+    "description": "PV charging control"
+  },
+  {
+    "address": "78",
+    "name": "total_DC_discharge_power",
+    "description": "Power-related configuration"
+  },
+  {
+    "address": "59",
+    "name": "PV_charge_energy_total_H",
+    "description": "PV charging control"
+  },
+  {
+    "address": "60",
+    "name": "PV_charge_energy_total_L",
+    "description": "PV charging control"
+  },
+  {
+    "address": "61",
+    "name": "PV_charge_energy_today",
+    "description": "PV charging control"
+  },
+  {
+    "address": "77",
+    "name": "smart_meter_power",
+    "description": "Power-related configuration"
+  },
+  {
+    "address": "401",
+    "name": "PV1_chart_start",
+    "description": "PV charging control"
+  },
+  {
+    "address": "701",
+    "name": "PV2_chart_start",
+    "description": "PV charging control"
+  },
+  {
+    "address": "24",
+    "name": "Offline_AC_output_sleep_time",
+    "description": "AC voltage/power monitoring"
+  },
+  {
+    "address": "49",
+    "name": "PV_Version",
+    "description": "PV charging control"
+  }
+]

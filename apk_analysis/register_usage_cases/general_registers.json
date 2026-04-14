@@ -1,0 +1,107 @@
+[
+  {
+    "address": "53",
+    "name": "deviceState1",
+    "description": "General purpose register"
+  },
+  {
+    "address": "54",
+    "name": "deviceState2",
+    "description": "General purpose register"
+  },
+  {
+    "address": "75",
+    "name": "systemState",
+    "description": "General purpose register"
+  },
+  {
+    "address": "75",
+    "name": "City_No",
+    "description": "General purpose register"
+  },
+  {
+    "address": "76",
+    "name": "systemState2",
+    "description": "General purpose register"
+  },
+  {
+    "address": "5",
+    "name": "DC_input_type",
+    "description": "General purpose register"
+  },
+  {
+    "address": "13",
+    "name": "eco",
+    "description": "General purpose register"
+  },
+  {
+    "address": "10",
+    "name": "Car_charge_onoff",
+    "description": "General purpose register"
+  },
+  {
+    "address": "11",
+    "name": "DC_usb_pd_led_wirelesscharge_Port_Out_onoff",
+    "description": "General purpose register"
+  },
+  {
+    "address": "2",
+    "name": "system_idle_set",
+    "description": "General purpose register"
+  },
+  {
+    "address": "31",
+    "name": "main_BAT",
+    "description": "General purpose register"
+  },
+  {
+    "address": "32",
+    "name": "slave1_BAT",
+    "description": "General purpose register"
+  },
+  {
+    "address": "33",
+    "name": "slave2_BAT",
+    "description": "General purpose register"
+  },
+  {
+    "address": "34",
+    "name": "slave3_BAT",
+    "description": "General purpose register"
+  },
+  {
+    "address": "35",
+    "name": "slave4_BAT",
+    "description": "General purpose register"
+  },
+  {
+    "address": "15",
+    "name": "smart_meter_wifi",
+    "description": "General purpose register"
+  },
+  {
+    "address": "14",
+    "name": "APP_control_remote_shutoff",
+    "description": "General purpose register"
+  },
+  {
+    "address": "21",
+    "name": "DC_input_max_curr",
+    "description": "General purpose register"
+  },
+  {
+    "address": "23",
+    "name": "DC_input_max_curr_set",
+    "description": "General purpose register"
+  },
+  {
+    "address": "88",
+    "name": "charge_priority",
+    "description": "General purpose register"
+  },
+  {
+    "address": "85",
+    "name": "UPS_mode_set",
+    "description": "General purpose register"
+  }
+]

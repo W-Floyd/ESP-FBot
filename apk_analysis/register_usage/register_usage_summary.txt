@@ -1,0 +1,746 @@
+======================================================================
+REGISTER USAGE REPORT
+======================================================================
+
+Total usages found: 131
+Unique registers: 74
+
+======================================================================
+OPERATIONS BREAKDOWN
+======================================================================
+
+
+DEFINED (115 usages):
+----------------------------------------
+  Address 0x0000 (   0) - reset_to_factory
+    Context: Wu constants
+    Line 25775: const Wu = { reset_to_factory: 0x0 }
+  Address 0x0000 (   0) - DC_charge_power
+    Context: Wu constants
+    Line 25775: const Wu = { DC_charge_power: 0x0 }
+  Address 0x0001 (   1) - debug_mode
+    Context: Wu constants
+    Line 25775: const Wu = { debug_mode: 0x1 }
+  Address 0x0001 (   1) - grid_function_pause
+    Context: Wu constants
+    Line 25775: const Wu = { grid_function_pause: 0x1 }
+  Address 0x0001 (   1) - grid_charge_power_level_set
+    Context: Wu constants
+    Line 25775: const Wu = { grid_charge_power_level_set: 0x1 }
+  Address 0x0002 (   2) - system_idle_set
+    Context: Wu constants
+    Line 25775: const Wu = { system_idle_set: 0x2 }
+  Address 0x0002 (   2) - Grid_charge_power
+    Context: Wu constants
+    Line 25775: const Wu = { Grid_charge_power: 0x2 }
+  Address 0x0002 (   2) - AC_charge_power
+    Context: Wu constants
+    Line 25775: const Wu = { AC_charge_power: 0x2 }
+  Address 0x0003 (   3) - AI_energy_control
+    Context: Wu constants
+    Line 25775: const Wu = { AI_energy_control: 0x3 }
+  Address 0x0003 (   3) - PV1_charge_power
+    Context: Wu constants
+    Line 25775: const Wu = { PV1_charge_power: 0x3 }
+  Address 0x0004 (   4) - timeZone
+    Context: Wu constants
+    Line 25775: const Wu = { timeZone: 0x4 }
+  Address 0x0004 (   4) - AC_backup_output_onoff
+    Context: Wu constants
+    Line 25775: const Wu = { AC_backup_output_onoff: 0x4 }
+  Address 0x0004 (   4) - AC_BackUp_Output_KEY_onoff
+    Context: Wu constants
+    Line 25775: const Wu = { AC_BackUp_Output_KEY_onoff: 0x4 }
+  Address 0x0004 (   4) - PV2_charge_power
+    Context: Wu constants
+    Line 25775: const Wu = { PV2_charge_power: 0x4 }
+  Address 0x0005 (   5) - DST_start_time
+    Context: Wu constants
+    Line 25775: const Wu = { DST_start_time: 0x5 }
+  Address 0x0005 (   5) - AC_Vol_Exist_status
+    Context: Wu constants
+    Line 25775: const Wu = { AC_Vol_Exist_status: 0x5 }
+  Address 0x0005 (   5) - PV3_charge_power
+    Context: Wu constants
+    Line 25775: const Wu = { PV3_charge_power: 0x5 }
+  Address 0x0005 (   5) - DC_input_type
+    Context: Wu constants
+    Line 25775: const Wu = { DC_input_type: 0x5 }
+  Address 0x0006 (   6) - DST_end_time
+    Context: Wu constants
+    Line 25775: const Wu = { DST_end_time: 0x6 }
+  Address 0x0006 (   6) - AC_charge_onoff
+    Context: Wu constants
+    Line 25775: const Wu = { AC_charge_onoff: 0x6 }
+  Address 0x0006 (   6) - PV4_charge_power
+    Context: Wu constants
+    Line 25775: const Wu = { PV4_charge_power: 0x6 }
+  Address 0x0006 (   6) - silent_charging_mode
+    Context: Wu constants
+    Line 25775: const Wu = { silent_charging_mode: 0x6 }
+  Address 0x0006 (   6) - silent_charging_mode
+    Context: Wu constants
+    Line 25775: const Wu = { silent_charging_mode: 0x6 }
+  Address 0x0007 (   7) - grid_discharge_onoff
+    Context: Wu constants
+    Line 25775: const Wu = { grid_discharge_onoff: 0x7 }
+  Address 0x0007 (   7) - AC_grid_power
+    Context: Wu constants
+    Line 25775: const Wu = { AC_grid_power: 0x7 }
+  Address 0x0007 (   7) - Buzzer_enable
+    Context: Wu constants
+    Line 25775: const Wu = { Buzzer_enable: 0x7 }
+  Address 0x0008 (   8) - Low_PV_Vol_Exist_status
+    Context: Wu constants
+    Line 25775: const Wu = { Low_PV_Vol_Exist_status: 0x8 }
+  Address 0x0008 (   8) - grid_auto_enable
+    Context: Wu constants
+    Line 25775: const Wu = { grid_auto_enable: 0x8 }
+  Address 0x0009 (   9) - Low_PV_charge_onoff
+    Context: Wu constants
+    Line 25775: const Wu = { Low_PV_charge_onoff: 0x9 }
+  Address 0x0009 (   9) - Car_charge_Vol_Exist_status
+    Context: Wu constants
+    Line 25775: const Wu = { Car_charge_Vol_Exist_status: 0x9 }
+  Address 0x0009 (   9) - BMS_user_status_BatHeat
+    Context: Wu constants
+    Line 25775: const Wu = { BMS_user_status_BatHeat: 0x9 }
+  Address 0x0009 (   9) - grid_immediate_enable
+    Context: Wu constants
+    Line 25775: const Wu = { grid_immediate_enable: 0x9 }
+  Address 0x000A (  10) - Car_charge_onoff
+    Context: Wu constants
+    Line 25775: const Wu = { Car_charge_onoff: 0xa }
+  Address 0x000A (  10) - grid_custom_enable
+    Context: Wu constants
+    Line 25775: const Wu = { grid_custom_enable: 0xa }
+  Address 0x000A (  10) - smartSocketMeter_firmware_version_count
+    Context: Wu constants
+    Line 25775: const Wu = { smartSocketMeter_firmware_version_count: 0xa }
+  Address 0x000B (  11) - PV2_charge_onoff
+    Context: Wu constants
+    Line 25775: const Wu = { PV2_charge_onoff: 0xb }
+  Address 0x000B (  11) - DC_usb_pd_led_wirelesscharge_Port_Out_onoff
+    Context: Wu constants
+    Line 25775: const Wu = { DC_usb_pd_led_wirelesscharge_Port_Out_onoff: 0xb }
+  Address 0x000B (  11) - charge_immediate_enable
+    Context: Wu constants
+    Line 25775: const Wu = { charge_immediate_enable: 0xb }
+  Address 0x000C (  12) - High_PV_Vol_Exist_status
+    Context: Wu constants
+    Line 25775: const Wu = { High_PV_Vol_Exist_status: 0xc }
+  Address 0x000C (  12) - AC_output_power
+    Context: Wu constants
+    Line 25775: const Wu = { AC_output_power: 0xc }
+  Address 0x000C (  12) - charge_custom_enable
+    Context: Wu constants
+    Line 25775: const Wu = { charge_custom_enable: 0xc }
+  Address 0x000D (  13) - High_PV_charge_onoff
+    Context: Wu constants
+    Line 25775: const Wu = { High_PV_charge_onoff: 0xd }
+  Address 0x000D (  13) - eco
+    Context: Wu constants
+    Line 25775: const Wu = { eco: 0xd }
+  Address 0x000E (  14) - APP_control_remote_shutoff
+    Context: Wu constants
+    Line 25775: const Wu = { APP_control_remote_shutoff: 0xe }
+  Address 0x000F (  15) - smart_meter_wifi
+    Context: Wu constants
+    Line 25775: const Wu = { smart_meter_wifi: 0xf }
+  Address 0x0015 (  21) - DC_input_max_curr
+    Context: Wu constants
+    Line 25775: const Wu = { DC_input_max_curr: 0x15 }
+  Address 0x0017 (  23) - DC_input_max_curr_set
+    Context: Wu constants
+    Line 25775: const Wu = { DC_input_max_curr_set: 0x17 }
+  Address 0x0018 (  24) - Offline_AC_output_sleep_time
+    Context: Wu constants
+    Line 25775: const Wu = { Offline_AC_output_sleep_time: 0x18 }
+  Address 0x0019 (  25) - LCD_dim_time
+    Context: Wu constants
+    Line 25775: const Wu = { LCD_dim_time: 0x19 }
+  Address 0x001A (  26) - discharge_SOC_min_limit
+    Context: Wu constants
+    Line 25775: const Wu = { discharge_SOC_min_limit: 0x1a }
+  Address 0x001A (  26) - discharge_soc_min_limit
+    Context: Wu constants
+    Line 25775: const Wu = { discharge_soc_min_limit: 0x1a }
+  Address 0x001B (  27) - ups_charge_soc_max_limit
+    Context: Wu constants
+    Line 25775: const Wu = { ups_charge_soc_max_limit: 0x1b }
+  Address 0x001C (  28) - shutdown_wait_time
+    Context: Wu constants
+    Line 25775: const Wu = { shutdown_wait_time: 0x1c }
+  Address 0x001D (  29) - USB_QC_PD_sleep_time
+    Context: Wu constants
+    Line 25775: const Wu = { USB_QC_PD_sleep_time: 0x1d }
+  Address 0x001E (  30) - DC_12V_output_sleep_time
+    Context: Wu constants
+    Line 25775: const Wu = { DC_12V_output_sleep_time: 0x1e }
+  Address 0x001F (  31) - main_BAT
+    Context: Wu constants
+    Line 25775: const Wu = { main_BAT: 0x1f }
+  Address 0x001F (  31) - ECO_SOC_min_limit
+    Context: Wu constants
+    Line 25775: const Wu = { ECO_SOC_min_limit: 0x1f }
+  Address 0x0020 (  32) - slave1_BAT
+    Context: Wu constants
+    Line 25775: const Wu = { slave1_BAT: 0x20 }
+  Address 0x0020 (  32) - dod_deep_discharge
+    Context: Wu constants
+    Line 25775: const Wu = { dod_deep_discharge: 0x20 }
+  Address 0x0021 (  33) - slave2_BAT
+    Context: Wu constants
+    Line 25775: const Wu = { slave2_BAT: 0x21 }
+  Address 0x0021 (  33) - grid_immediate_power
+    Context: Wu constants
+    Line 25775: const Wu = { grid_immediate_power: 0x21 }
+  Address 0x0022 (  34) - slave3_BAT
+    Context: Wu constants
+    Line 25775: const Wu = { slave3_BAT: 0x22 }
+  Address 0x0022 (  34) - grid_immediate_time
+    Context: Wu constants
+    Line 25775: const Wu = { grid_immediate_time: 0x22 }
+  Address 0x0023 (  35) - slave4_BAT
+    Context: Wu constants
+    Line 25775: const Wu = { slave4_BAT: 0x23 }
+  Address 0x0023 (  35) - grid_immediate_EndSOC
+    Context: Wu constants
+    Line 25775: const Wu = { grid_immediate_EndSOC: 0x23 }
+  Address 0x0024 (  36) - charge_immediate_time
+    Context: Wu constants
+    Line 25775: const Wu = { charge_immediate_time: 0x24 }
+  Address 0x0025 (  37) - main_BMS_user_status
+    Context: Wu constants
+    Line 25775: const Wu = { main_BMS_user_status: 0x25 }
+  Address 0x0025 (  37) - charge_immediate_energySOC
+    Context: Wu constants
+    Line 25775: const Wu = { charge_immediate_energySOC: 0x25 }
+  Address 0x0026 (  38) - firmware_function_code
+    Context: Wu constants
+    Line 25775: const Wu = { firmware_function_code: 0x26 }
+  Address 0x0026 (  38) - firmware_upgrade_type_pack_function_code
+    Context: Wu constants
+    Line 25775: const Wu = { firmware_upgrade_type_pack_function_code: 0x26 }
+  Address 0x0027 (  39) - slave1_BMS_user_status
+    Context: Wu constants
+    Line 25775: const Wu = { slave1_BMS_user_status: 0x27 }
+  Address 0x0029 (  41) - slave2_BMS_user_status
+    Context: Wu constants
+    Line 25775: const Wu = { slave2_BMS_user_status: 0x29 }
+  Address 0x002B (  43) - slave3_BMS_user_status
+    Context: Wu constants
+    Line 25775: const Wu = { slave3_BMS_user_status: 0x2b }
+  Address 0x002D (  45) - slave4_BMS_user_status
+    Context: Wu constants
+    Line 25775: const Wu = { slave4_BMS_user_status: 0x2d }
+  Address 0x002F (  47) - AC_Version
+    Context: Wu constants
+    Line 25775: const Wu = { AC_Version: 0x2f }
+  Address 0x0030 (  48) - BMS_Version
+    Context: Wu constants
+    Line 25775: const Wu = { BMS_Version: 0x30 }
+  Address 0x0031 (  49) - PV_Version
+    Context: Wu constants
+    Line 25775: const Wu = { PV_Version: 0x31 }
+  Address 0x0032 (  50) - Panel_Version
+    Context: Wu constants
+    Line 25775: const Wu = { Panel_Version: 0x32 }
+  Address 0x0035 (  53) - deviceState1
+    Context: Wu constants
+    Line 25775: const Wu = { deviceState1: 0x35 }
+  Address 0x0036 (  54) - deviceState2
+    Context: Wu constants
+    Line 25775: const Wu = { deviceState2: 0x36 }
+  Address 0x003B (  59) - PV_charge_energy_total_H
+    Context: Wu constants
+    Line 25775: const Wu = { PV_charge_energy_total_H: 0x3b }
+  Address 0x003C (  60) - PV_charge_energy_total_L
+    Context: Wu constants
+    Line 25775: const Wu = { PV_charge_energy_total_L: 0x3c }
+  Address 0x003D (  61) - PV_charge_energy_today
+    Context: Wu constants
+    Line 25775: const Wu = { PV_charge_energy_today: 0x3d }
+  Address 0x0046 (  70) - grid_charge_appointment_time
+    Context: Wu constants
+    Line 25775: const Wu = { grid_charge_appointment_time: 0x46 }
+  Address 0x0047 (  71) - remain_charge_time
+    Context: Wu constants
+    Line 25775: const Wu = { remain_charge_time: 0x47 }
+  Address 0x0048 (  72) - remain_discharge_time
+    Context: Wu constants
+    Line 25775: const Wu = { remain_discharge_time: 0x48 }
+  Address 0x004A (  74) - smartSocketRelayAndWiFi
+    Context: Wu constants
+    Line 25775: const Wu = { smartSocketRelayAndWiFi: 0x4a }
+  Address 0x004B (  75) - systemState
+    Context: Wu constants
+    Line 25775: const Wu = { systemState: 0x4b }
+  Address 0x004B (  75) - City_No
+    Context: Wu constants
+    Line 25775: const Wu = { City_No: 0x4b }
+  Address 0x004C (  76) - systemState2
+    Context: Wu constants
+    Line 25775: const Wu = { systemState2: 0x4c }
+  Address 0x004D (  77) - smart_meter_power
+    Context: Wu constants
+    Line 25775: const Wu = { smart_meter_power: 0x4d }
+  Address 0x004E (  78) - total_DC_discharge_power
+    Context: Wu constants
+    Line 25775: const Wu = { total_DC_discharge_power: 0x4e }
+  Address 0x0053 (  83) - grid_charge_custom_enable_flag
+    Context: Wu constants
+    Line 25775: const Wu = { grid_charge_custom_enable_flag: 0x53 }
+  Address 0x0054 (  84) - grid_charge_custom_current_status
+    Context: Wu constants
+    Line 25775: const Wu = { grid_charge_custom_current_status: 0x54 }
+  Address 0x0054 (  84) - LowBatteryNotification
+    Context: Wu constants
+    Line 25775: const Wu = { LowBatteryNotification: 0x54 }
+  Address 0x0055 (  85) - UPS_mode_set
+    Context: Wu constants
+    Line 25775: const Wu = { UPS_mode_set: 0x55 }
+  Address 0x0056 (  86) - grid_tie_out_power_max_set
+    Context: Wu constants
+    Line 25775: const Wu = { grid_tie_out_power_max_set: 0x56 }
+  Address 0x0058 (  88) - charge_priority
+    Context: Wu constants
+    Line 25775: const Wu = { charge_priority: 0x58 }
+  Address 0x0061 (  97) - device_time_year_month
+    Context: Wu constants
+    Line 25775: const Wu = { device_time_year_month: 0x61 }
+  Address 0x0062 (  98) - device_time_day_hour
+    Context: Wu constants
+    Line 25775: const Wu = { device_time_day_hour: 0x62 }
+  Address 0x0063 (  99) - device_time_min_sec
+    Context: Wu constants
+    Line 25775: const Wu = { device_time_min_sec: 0x63 }
+  Address 0x0063 (  99) - main_board_firmware_address_max
+    Context: Wu constants
+    Line 25775: const Wu = { main_board_firmware_address_max: 0x63 }
+  Address 0x0064 ( 100) - smartSocketMeter_firmware_version_address
+    Context: Wu constants
+    Line 25775: const Wu = { smartSocketMeter_firmware_version_address: 0x64 }
+  Address 0x0064 ( 100) - smartSocketMeter_firmware_version_function_code
+    Context: Wu constants
+    Line 25775: const Wu = { smartSocketMeter_firmware_version_function_code: 0x64 }
+  Address 0x0065 ( 101) - grid_charge_chart_start
+    Context: Wu constants
+    Line 25775: const Wu = { grid_charge_chart_start: 0x65 }
+  Address 0x0065 ( 101) - smartSocketMeter_firmware_upgrade_type_link_function_code
+    Context: Wu constants
+    Line 25775: const Wu = { smartSocketMeter_firmware_upgrade_type_link_function_code: 0x65 }
+  Address 0x0065 ( 101) - socket_firmware_address_min
+    Context: Wu constants
+    Line 25775: const Wu = { socket_firmware_address_min: 0x65 }
+  Address 0x0066 ( 102) - smartSocketMeter_firmware_upgrade_type_pack_function_code
+    Context: Wu constants
+    Line 25775: const Wu = { smartSocketMeter_firmware_upgrade_type_pack_function_code: 0x66 }
+  Address 0x0068 ( 104) - socket_firmware_address_max
+    Context: Wu constants
+    Line 25775: const Wu = { socket_firmware_address_max: 0x68 }
+  Address 0x0069 ( 105) - meter_firmware_address_min
+    Context: Wu constants
+    Line 25775: const Wu = { meter_firmware_address_min: 0x69 }
+  Address 0x006D ( 109) - socket_meter_firmware_address_max
+    Context: Wu constants
+    Line 25775: const Wu = { socket_meter_firmware_address_max: 0x6d }
+  Address 0x006D ( 109) - meter_firmware_address_max
+    Context: Wu constants
+    Line 25775: const Wu = { meter_firmware_address_max: 0x6d }
+  Address 0x0191 ( 401) - PV1_chart_start
+    Context: Wu constants
+    Line 25775: const Wu = { PV1_chart_start: 0x191 }
+  Address 0x02BD ( 701) - PV2_chart_start
+    Context: Wu constants
+    Line 25775: const Wu = { PV2_chart_start: 0x2bd }
+  Address 0x03E9 (1001) - energy_chart_start
+    Context: Wu constants
+    Line 25775: const Wu = { energy_chart_start: 0x3e9 }
+
+ARRAY (10 usages):
+----------------------------------------
+  Address 0x0000 (   0) - charge_custom_enable_arr
+    Context: Wu constants array
+    Line 25775: Wu.charge_custom_enable_arr = [0]
+  Address 0x0004 (   4) - grid_custom_enable_arr
+    Context: Wu constants array
+    Line 25775: Wu.grid_custom_enable_arr = [4]
+  Address 0x000F (  15) - smart_socket_power_arr
+    Context: Wu constants array
+    Line 25775: Wu.smart_socket_power_arr = [15]
+  Address 0x0026 (  38) - charge_custom_startEnd_time_arr
+    Context: Wu constants array
+    Line 25775: Wu.charge_custom_startEnd_time_arr = [38]
+  Address 0x0027 (  39) - charge_custom_energySOC_arr
+    Context: Wu constants array
+    Line 25775: Wu.charge_custom_energySOC_arr = [39]
+  Address 0x0028 (  40) - charge_custom_period_arr
+    Context: Wu constants array
+    Line 25775: Wu.charge_custom_period_arr = [40]
+  Address 0x0034 (  52) - grid_custom_startEnd_time_arr
+    Context: Wu constants array
+    Line 25775: Wu.grid_custom_startEnd_time_arr = [52]
+  Address 0x0035 (  53) - grid_custom_powerPeriod_arr
+    Context: Wu constants array
+    Line 25775: Wu.grid_custom_powerPeriod_arr = [53]
+  Address 0x0044 (  68) - grid_discharge_end_soc_arr
+    Context: Wu constants array
+    Line 25775: Wu.grid_discharge_end_soc_arr = [68]
+  Address 0x0050 (  80) - socket_meter_bind_arr
+    Context: Wu constants array
+    Line 25775: Wu.socket_meter_bind_arr = [80]
+
+COMMAND (6 usages):
+----------------------------------------
+  Address 0x-001 (  -1) - GET_BLE_WRITE
+    Context: BLE command
+    Line 2040764: GET_BLE_WRITE: "GET_BLE_WRITE"
+  Address 0x-001 (  -1) - GET_BLE_HOLDING_REGISTER
+    Context: BLE command
+    Line 1269049: GET_BLE_HOLDING_REGISTER: "GET_BLE_HOLDING_REGISTER"
+  Address 0x-001 (  -1) - GET_BLE_HOLDING_REGISTER_SET
+    Context: BLE command
+    Line 1269049: GET_BLE_HOLDING_REGISTER_SET: "GET_BLE_HOLDING_REGISTER_SET"
+  Address 0x-001 (  -1) - GET_BLE_INPUT_REGISTER_SET
+    Context: BLE command
+    Line 1508472: GET_BLE_INPUT_REGISTER_SET: "GET_BLE_INPUT_REGISTER_SET"
+  Address 0x-001 (  -1) - GET_BLE_INPUT_REGISTER
+    Context: BLE command
+    Line 1347594: GET_BLE_INPUT_REGISTER: "GET_BLE_INPUT_REGISTER"
+  Address 0x-001 (  -1) - GET_BLE_INPUT_REGISTER_CHART
+    Context: BLE command
+    Line 1495479: GET_BLE_INPUT_REGISTER_CHART: "GET_BLE_INPUT_REGISTER_CHART"
+
+======================================================================
+REGISTER DETAILS
+======================================================================
+
+
+Register 0x0001 (   1):
+  - debug_mode: Wu constants
+    const Wu = { debug_mode: 0x1 }
+  - grid_function_pause: Wu constants
+    const Wu = { grid_function_pause: 0x1 }
+  - grid_charge_power_level_set: Wu constants
+    const Wu = { grid_charge_power_level_set: 0x1 }
+Register 0x0002 (   2):
+  - system_idle_set: Wu constants
+    const Wu = { system_idle_set: 0x2 }
+  - Grid_charge_power: Wu constants
+    const Wu = { Grid_charge_power: 0x2 }
+  - AC_charge_power: Wu constants
+    const Wu = { AC_charge_power: 0x2 }
+Register 0x0003 (   3):
+  - AI_energy_control: Wu constants
+    const Wu = { AI_energy_control: 0x3 }
+  - PV1_charge_power: Wu constants
+    const Wu = { PV1_charge_power: 0x3 }
+Register 0x0004 (   4):
+  - timeZone: Wu constants
+    const Wu = { timeZone: 0x4 }
+  - AC_backup_output_onoff: Wu constants
+    const Wu = { AC_backup_output_onoff: 0x4 }
+  - AC_BackUp_Output_KEY_onoff: Wu constants
+    const Wu = { AC_BackUp_Output_KEY_onoff: 0x4 }
+  - PV2_charge_power: Wu constants
+    const Wu = { PV2_charge_power: 0x4 }
+  - grid_custom_enable_arr: Wu constants array
+    Wu.grid_custom_enable_arr = [4]
+Register 0x0005 (   5):
+  - DST_start_time: Wu constants
+    const Wu = { DST_start_time: 0x5 }
+  - AC_Vol_Exist_status: Wu constants
+    const Wu = { AC_Vol_Exist_status: 0x5 }
+  - PV3_charge_power: Wu constants
+    const Wu = { PV3_charge_power: 0x5 }
+  - DC_input_type: Wu constants
+    const Wu = { DC_input_type: 0x5 }
+Register 0x0006 (   6):
+  - DST_end_time: Wu constants
+    const Wu = { DST_end_time: 0x6 }
+  - AC_charge_onoff: Wu constants
+    const Wu = { AC_charge_onoff: 0x6 }
+  - PV4_charge_power: Wu constants
+    const Wu = { PV4_charge_power: 0x6 }
+  - silent_charging_mode: Wu constants
+    const Wu = { silent_charging_mode: 0x6 }
+  - silent_charging_mode: Wu constants
+    const Wu = { silent_charging_mode: 0x6 }
+Register 0x0007 (   7):
+  - grid_discharge_onoff: Wu constants
+    const Wu = { grid_discharge_onoff: 0x7 }
+  - AC_grid_power: Wu constants
+    const Wu = { AC_grid_power: 0x7 }
+  - Buzzer_enable: Wu constants
+    const Wu = { Buzzer_enable: 0x7 }
+Register 0x0008 (   8):
+  - Low_PV_Vol_Exist_status: Wu constants
+    const Wu = { Low_PV_Vol_Exist_status: 0x8 }
+  - grid_auto_enable: Wu constants
+    const Wu = { grid_auto_enable: 0x8 }
+Register 0x0009 (   9):
+  - Low_PV_charge_onoff: Wu constants
+    const Wu = { Low_PV_charge_onoff: 0x9 }
+  - Car_charge_Vol_Exist_status: Wu constants
+    const Wu = { Car_charge_Vol_Exist_status: 0x9 }
+  - BMS_user_status_BatHeat: Wu constants
+    const Wu = { BMS_user_status_BatHeat: 0x9 }
+  - grid_immediate_enable: Wu constants
+    const Wu = { grid_immediate_enable: 0x9 }
+Register 0x000A (  10):
+  - Car_charge_onoff: Wu constants
+    const Wu = { Car_charge_onoff: 0xa }
+  - grid_custom_enable: Wu constants
+    const Wu = { grid_custom_enable: 0xa }
+  - smartSocketMeter_firmware_version_count: Wu constants
+    const Wu = { smartSocketMeter_firmware_version_count: 0xa }
+Register 0x000B (  11):
+  - PV2_charge_onoff: Wu constants
+    const Wu = { PV2_charge_onoff: 0xb }
+  - DC_usb_pd_led_wirelesscharge_Port_Out_onoff: Wu constants
+    const Wu = { DC_usb_pd_led_wirelesscharge_Port_Out_onoff: 0xb }
+  - charge_immediate_enable: Wu constants
+    const Wu = { charge_immediate_enable: 0xb }
+Register 0x000C (  12):
+  - High_PV_Vol_Exist_status: Wu constants
+    const Wu = { High_PV_Vol_Exist_status: 0xc }
+  - AC_output_power: Wu constants
+    const Wu = { AC_output_power: 0xc }
+  - charge_custom_enable: Wu constants
+    const Wu = { charge_custom_enable: 0xc }
+Register 0x000D (  13):
+  - High_PV_charge_onoff: Wu constants
+    const Wu = { High_PV_charge_onoff: 0xd }
+  - eco: Wu constants
+    const Wu = { eco: 0xd }
+Register 0x000E (  14):
+  - APP_control_remote_shutoff: Wu constants
+    const Wu = { APP_control_remote_shutoff: 0xe }
+Register 0x000F (  15):
+  - smart_meter_wifi: Wu constants
+    const Wu = { smart_meter_wifi: 0xf }
+  - smart_socket_power_arr: Wu constants array
+    Wu.smart_socket_power_arr = [15]
+Register 0x0015 (  21):
+  - DC_input_max_curr: Wu constants
+    const Wu = { DC_input_max_curr: 0x15 }
+Register 0x0017 (  23):
+  - DC_input_max_curr_set: Wu constants
+    const Wu = { DC_input_max_curr_set: 0x17 }
+Register 0x0018 (  24):
+  - Offline_AC_output_sleep_time: Wu constants
+    const Wu = { Offline_AC_output_sleep_time: 0x18 }
+Register 0x0019 (  25):
+  - LCD_dim_time: Wu constants
+    const Wu = { LCD_dim_time: 0x19 }
+Register 0x001A (  26):
+  - discharge_SOC_min_limit: Wu constants
+    const Wu = { discharge_SOC_min_limit: 0x1a }
+  - discharge_soc_min_limit: Wu constants
+    const Wu = { discharge_soc_min_limit: 0x1a }
+Register 0x001B (  27):
+  - ups_charge_soc_max_limit: Wu constants
+    const Wu = { ups_charge_soc_max_limit: 0x1b }
+Register 0x001C (  28):
+  - shutdown_wait_time: Wu constants
+    const Wu = { shutdown_wait_time: 0x1c }
+Register 0x001D (  29):
+  - USB_QC_PD_sleep_time: Wu constants
+    const Wu = { USB_QC_PD_sleep_time: 0x1d }
+Register 0x001E (  30):
+  - DC_12V_output_sleep_time: Wu constants
+    const Wu = { DC_12V_output_sleep_time: 0x1e }
+Register 0x001F (  31):
+  - main_BAT: Wu constants
+    const Wu = { main_BAT: 0x1f }
+  - ECO_SOC_min_limit: Wu constants
+    const Wu = { ECO_SOC_min_limit: 0x1f }
+Register 0x0020 (  32):
+  - slave1_BAT: Wu constants
+    const Wu = { slave1_BAT: 0x20 }
+  - dod_deep_discharge: Wu constants
+    const Wu = { dod_deep_discharge: 0x20 }
+Register 0x0021 (  33):
+  - slave2_BAT: Wu constants
+    const Wu = { slave2_BAT: 0x21 }
+  - grid_immediate_power: Wu constants
+    const Wu = { grid_immediate_power: 0x21 }
+Register 0x0022 (  34):
+  - slave3_BAT: Wu constants
+    const Wu = { slave3_BAT: 0x22 }
+  - grid_immediate_time: Wu constants
+    const Wu = { grid_immediate_time: 0x22 }
+Register 0x0023 (  35):
+  - slave4_BAT: Wu constants
+    const Wu = { slave4_BAT: 0x23 }
+  - grid_immediate_EndSOC: Wu constants
+    const Wu = { grid_immediate_EndSOC: 0x23 }
+Register 0x0024 (  36):
+  - charge_immediate_time: Wu constants
+    const Wu = { charge_immediate_time: 0x24 }
+Register 0x0025 (  37):
+  - main_BMS_user_status: Wu constants
+    const Wu = { main_BMS_user_status: 0x25 }
+  - charge_immediate_energySOC: Wu constants
+    const Wu = { charge_immediate_energySOC: 0x25 }
+Register 0x0026 (  38):
+  - firmware_function_code: Wu constants
+    const Wu = { firmware_function_code: 0x26 }
+  - firmware_upgrade_type_pack_function_code: Wu constants
+    const Wu = { firmware_upgrade_type_pack_function_code: 0x26 }
+  - charge_custom_startEnd_time_arr: Wu constants array
+    Wu.charge_custom_startEnd_time_arr = [38]
+Register 0x0027 (  39):
+  - slave1_BMS_user_status: Wu constants
+    const Wu = { slave1_BMS_user_status: 0x27 }
+  - charge_custom_energySOC_arr: Wu constants array
+    Wu.charge_custom_energySOC_arr = [39]
+Register 0x0028 (  40):
+  - charge_custom_period_arr: Wu constants array
+    Wu.charge_custom_period_arr = [40]
+Register 0x0029 (  41):
+  - slave2_BMS_user_status: Wu constants
+    const Wu = { slave2_BMS_user_status: 0x29 }
+Register 0x002B (  43):
+  - slave3_BMS_user_status: Wu constants
+    const Wu = { slave3_BMS_user_status: 0x2b }
+Register 0x002D (  45):
+  - slave4_BMS_user_status: Wu constants
+    const Wu = { slave4_BMS_user_status: 0x2d }
+Register 0x002F (  47):
+  - AC_Version: Wu constants
+    const Wu = { AC_Version: 0x2f }
+Register 0x0030 (  48):
+  - BMS_Version: Wu constants
+    const Wu = { BMS_Version: 0x30 }
+Register 0x0031 (  49):
+  - PV_Version: Wu constants
+    const Wu = { PV_Version: 0x31 }
+Register 0x0032 (  50):
+  - Panel_Version: Wu constants
+    const Wu = { Panel_Version: 0x32 }
+Register 0x0034 (  52):
+  - grid_custom_startEnd_time_arr: Wu constants array
+    Wu.grid_custom_startEnd_time_arr = [52]
+Register 0x0035 (  53):
+  - deviceState1: Wu constants
+    const Wu = { deviceState1: 0x35 }
+  - grid_custom_powerPeriod_arr: Wu constants array
+    Wu.grid_custom_powerPeriod_arr = [53]
+Register 0x0036 (  54):
+  - deviceState2: Wu constants
+    const Wu = { deviceState2: 0x36 }
+Register 0x003B (  59):
+  - PV_charge_energy_total_H: Wu constants
+    const Wu = { PV_charge_energy_total_H: 0x3b }
+Register 0x003C (  60):
+  - PV_charge_energy_total_L: Wu constants
+    const Wu = { PV_charge_energy_total_L: 0x3c }
+Register 0x003D (  61):
+  - PV_charge_energy_today: Wu constants
+    const Wu = { PV_charge_energy_today: 0x3d }
+Register 0x0044 (  68):
+  - grid_discharge_end_soc_arr: Wu constants array
+    Wu.grid_discharge_end_soc_arr = [68]
+Register 0x0046 (  70):
+  - grid_charge_appointment_time: Wu constants
+    const Wu = { grid_charge_appointment_time: 0x46 }
+Register 0x0047 (  71):
+  - remain_charge_time: Wu constants
+    const Wu = { remain_charge_time: 0x47 }
+Register 0x0048 (  72):
+  - remain_discharge_time: Wu constants
+    const Wu = { remain_discharge_time: 0x48 }
+Register 0x004A (  74):
+  - smartSocketRelayAndWiFi: Wu constants
+    const Wu = { smartSocketRelayAndWiFi: 0x4a }
+Register 0x004B (  75):
+  - systemState: Wu constants
+    const Wu = { systemState: 0x4b }
+  - City_No: Wu constants
+    const Wu = { City_No: 0x4b }
+Register 0x004C (  76):
+  - systemState2: Wu constants
+    const Wu = { systemState2: 0x4c }
+Register 0x004D (  77):
+  - smart_meter_power: Wu constants
+    const Wu = { smart_meter_power: 0x4d }
+Register 0x004E (  78):
+  - total_DC_discharge_power: Wu constants
+    const Wu = { total_DC_discharge_power: 0x4e }
+Register 0x0050 (  80):
+  - socket_meter_bind_arr: Wu constants array
+    Wu.socket_meter_bind_arr = [80]
+Register 0x0053 (  83):
+  - grid_charge_custom_enable_flag: Wu constants
+    const Wu = { grid_charge_custom_enable_flag: 0x53 }
+Register 0x0054 (  84):
+  - grid_charge_custom_current_status: Wu constants
+    const Wu = { grid_charge_custom_current_status: 0x54 }
+  - LowBatteryNotification: Wu constants
+    const Wu = { LowBatteryNotification: 0x54 }
+Register 0x0055 (  85):
+  - UPS_mode_set: Wu constants
+    const Wu = { UPS_mode_set: 0x55 }
+Register 0x0056 (  86):
+  - grid_tie_out_power_max_set: Wu constants
+    const Wu = { grid_tie_out_power_max_set: 0x56 }
+Register 0x0058 (  88):
+  - charge_priority: Wu constants
+    const Wu = { charge_priority: 0x58 }
+Register 0x0061 (  97):
+  - device_time_year_month: Wu constants
+    const Wu = { device_time_year_month: 0x61 }
+Register 0x0062 (  98):
+  - device_time_day_hour: Wu constants
+    const Wu = { device_time_day_hour: 0x62 }
+Register 0x0063 (  99):
+  - device_time_min_sec: Wu constants
+    const Wu = { device_time_min_sec: 0x63 }
+  - main_board_firmware_address_max: Wu constants
+    const Wu = { main_board_firmware_address_max: 0x63 }
+Register 0x0064 ( 100):
+  - smartSocketMeter_firmware_version_address: Wu constants
+    const Wu = { smartSocketMeter_firmware_version_address: 0x64 }
+  - smartSocketMeter_firmware_version_function_code: Wu constants
+    const Wu = { smartSocketMeter_firmware_version_function_code: 0x64 }
+Register 0x0065 ( 101):
+  - grid_charge_chart_start: Wu constants
+    const Wu = { grid_charge_chart_start: 0x65 }
+  - smartSocketMeter_firmware_upgrade_type_link_function_code: Wu constants
+    const Wu = { smartSocketMeter_firmware_upgrade_type_link_function_code: 0x65 }
+  - socket_firmware_address_min: Wu constants
+    const Wu = { socket_firmware_address_min: 0x65 }
+Register 0x0066 ( 102):
+  - smartSocketMeter_firmware_upgrade_type_pack_function_code: Wu constants
+    const Wu = { smartSocketMeter_firmware_upgrade_type_pack_function_code: 0x66 }
+Register 0x0068 ( 104):
+  - socket_firmware_address_max: Wu constants
+    const Wu = { socket_firmware_address_max: 0x68 }
+Register 0x0069 ( 105):
+  - meter_firmware_address_min: Wu constants
+    const Wu = { meter_firmware_address_min: 0x69 }
+Register 0x006D ( 109):
+  - socket_meter_firmware_address_max: Wu constants
+    const Wu = { socket_meter_firmware_address_max: 0x6d }
+  - meter_firmware_address_max: Wu constants
+    const Wu = { meter_firmware_address_max: 0x6d }
+Register 0x0191 ( 401):
+  - PV1_chart_start: Wu constants
+    const Wu = { PV1_chart_start: 0x191 }
+Register 0x02BD ( 701):
+  - PV2_chart_start: Wu constants
+    const Wu = { PV2_chart_start: 0x2bd }
+Register 0x03E9 (1001):
+  - energy_chart_start: Wu constants
+    const Wu = { energy_chart_start: 0x3e9 }
+======================================================================
+BIDIRECTIONAL REGISTERS (read + write)
+======================================================================
+
+Address 0x0035: ['defined', 'array']
+Address 0x0004: ['defined', 'array']
+Address 0x0027: ['defined', 'array']
+Address 0x000F: ['defined', 'array']
+Address 0x0026: ['defined', 'array']

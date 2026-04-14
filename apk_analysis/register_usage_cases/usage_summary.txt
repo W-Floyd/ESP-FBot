@@ -1,0 +1,268 @@
+================================================================================
+REGISTER USAGE CASES ANALYSIS
+================================================================================
+
+Total registers analyzed: 71
+
+================================================================================
+REGISTER CATEGORIES
+================================================================================
+
+
+BATTERY_BMS (18 registers)
+----------------------------------------
+  0x000A (  10): smartSocketMeter_firmware_version_count
+    Battery BMS status registers
+  0x001A (  26): discharge_SOC_min_limit
+    Battery BMS status registers
+  0x001A (  26): discharge_soc_min_limit
+    Battery BMS status registers
+  0x001B (  27): ups_charge_soc_max_limit
+    Battery BMS status registers
+  0x001F (  31): ECO_SOC_min_limit
+    Battery BMS status registers
+  0x0020 (  32): dod_deep_discharge
+    Battery BMS status registers
+  0x0023 (  35): grid_immediate_EndSOC
+    Battery BMS status registers
+  0x0025 (  37): charge_immediate_energySOC
+    Battery BMS status registers
+  0x0030 (  48): BMS_Version
+    Battery BMS status registers
+  0x004A (  74): smartSocketRelayAndWiFi
+    Battery BMS status registers
+  0x0054 (  84): LowBatteryNotification
+    Battery BMS status registers
+  0x0064 ( 100): smartSocketMeter_firmware_version_address
+    Battery BMS status registers
+  0x0064 ( 100): smartSocketMeter_firmware_version_function_code
+    Battery BMS status registers
+  0x0065 ( 101): smartSocketMeter_firmware_upgrade_type_link_function_code
+    Battery BMS status registers
+  0x0065 ( 101): socket_firmware_address_min
+    Battery BMS status registers
+  0x0066 ( 102): smartSocketMeter_firmware_upgrade_type_pack_function_code
+    Battery BMS status registers
+  0x0068 ( 104): socket_firmware_address_max
+    Battery BMS status registers
+  0x006D ( 109): socket_meter_firmware_address_max
+    Battery BMS status registers
+
+CHART_DATA (3 registers)
+----------------------------------------
+  0x0003 (   3): AI_energy_control
+    Chart data start addresses
+  0x0065 ( 101): grid_charge_chart_start
+    Chart data start addresses
+  0x03E9 (1001): energy_chart_start
+    Chart data start addresses
+
+CONTROL (2 registers)
+----------------------------------------
+  0x0000 (   0): reset_to_factory
+    System control register (reset, debug)
+  0x0001 (   1): debug_mode
+    System control register (reset, debug)
+
+DEVICE_TIME (15 registers)
+----------------------------------------
+  0x0004 (   4): timeZone
+    Device time configuration
+  0x0005 (   5): DST_start_time
+    Device time configuration
+  0x0006 (   6): DST_end_time
+    Device time configuration
+  0x0019 (  25): LCD_dim_time
+    Device time configuration
+  0x001C (  28): shutdown_wait_time
+    Device time configuration
+  0x001D (  29): USB_QC_PD_sleep_time
+    Device time configuration
+  0x001E (  30): DC_12V_output_sleep_time
+    Device time configuration
+  0x0022 (  34): grid_immediate_time
+    Device time configuration
+  0x0024 (  36): charge_immediate_time
+    Device time configuration
+  0x0046 (  70): grid_charge_appointment_time
+    Device time configuration
+  0x0047 (  71): remain_charge_time
+    Device time configuration
+  0x0048 (  72): remain_discharge_time
+    Device time configuration
+  0x0061 (  97): device_time_year_month
+    Device time configuration
+  0x0062 (  98): device_time_day_hour
+    Device time configuration
+  0x0063 (  99): device_time_min_sec
+    Device time configuration
+
+FIRMWARE (5 registers)
+----------------------------------------
+  0x0026 (  38): firmware_function_code
+    Firmware upgrade addresses
+  0x0026 (  38): firmware_upgrade_type_pack_function_code
+    Firmware upgrade addresses
+  0x0063 (  99): main_board_firmware_address_max
+    Firmware upgrade addresses
+  0x0069 ( 105): meter_firmware_address_min
+    Firmware upgrade addresses
+  0x006D ( 109): meter_firmware_address_max
+    Firmware upgrade addresses
+
+GENERAL (21 registers)
+----------------------------------------
+  0x0002 (   2): system_idle_set
+    General purpose register
+  0x0005 (   5): DC_input_type
+    General purpose register
+  0x000A (  10): Car_charge_onoff
+    General purpose register
+  0x000B (  11): DC_usb_pd_led_wirelesscharge_Port_Out_onoff
+    General purpose register
+  0x000D (  13): eco
+    General purpose register
+  0x000E (  14): APP_control_remote_shutoff
+    General purpose register
+  0x000F (  15): smart_meter_wifi
+    General purpose register
+  0x0015 (  21): DC_input_max_curr
+    General purpose register
+  0x0017 (  23): DC_input_max_curr_set
+    General purpose register
+  0x001F (  31): main_BAT
+    General purpose register
+  0x0020 (  32): slave1_BAT
+    General purpose register
+  0x0021 (  33): slave2_BAT
+    General purpose register
+  0x0022 (  34): slave3_BAT
+    General purpose register
+  0x0023 (  35): slave4_BAT
+    General purpose register
+  0x0035 (  53): deviceState1
+    General purpose register
+  0x0036 (  54): deviceState2
+    General purpose register
+  0x004B (  75): systemState
+    General purpose register
+  0x004B (  75): City_No
+    General purpose register
+  0x004C (  76): systemState2
+    General purpose register
+  0x0055 (  85): UPS_mode_set
+    General purpose register
+  0x0058 (  88): charge_priority
+    General purpose register
+
+GRID_OPERATIONS (6 registers)
+----------------------------------------
+  0x0001 (   1): grid_function_pause
+    Grid operation parameters
+  0x0001 (   1): grid_charge_power_level_set
+    Grid operation parameters
+  0x0002 (   2): Grid_charge_power
+    Grid operation parameters
+  0x0007 (   7): grid_discharge_onoff
+    Grid operation parameters
+  0x0021 (  33): grid_immediate_power
+    Grid operation parameters
+  0x0056 (  86): grid_tie_out_power_max_set
+    Grid operation parameters
+
+POWER_CONTROL (27 registers)
+----------------------------------------
+  0x0000 (   0): DC_charge_power
+    Power-related configuration
+  0x0002 (   2): AC_charge_power
+    AC charging power control
+  0x0003 (   3): PV1_charge_power
+    PV charging control
+  0x0004 (   4): AC_backup_output_onoff
+    AC charging power control
+  0x0004 (   4): AC_BackUp_Output_KEY_onoff
+    AC charging power control
+  0x0004 (   4): PV2_charge_power
+    PV charging control
+  0x0005 (   5): AC_Vol_Exist_status
+    AC voltage/power monitoring
+  0x0005 (   5): PV3_charge_power
+    PV charging control
+  0x0006 (   6): AC_charge_onoff
+    AC charging power control
+  0x0006 (   6): PV4_charge_power
+    PV charging control
+  0x0006 (   6): silent_charging_mode
+    PV charging control
+  0x0007 (   7): AC_grid_power
+    AC voltage/power monitoring
+  0x0008 (   8): Low_PV_Vol_Exist_status
+    PV charging control
+  0x0009 (   9): Low_PV_charge_onoff
+    PV charging control
+  0x000B (  11): PV2_charge_onoff
+    PV charging control
+  0x000C (  12): High_PV_Vol_Exist_status
+    PV charging control
+  0x000C (  12): AC_output_power
+    AC voltage/power monitoring
+  0x000D (  13): High_PV_charge_onoff
+    PV charging control
+  0x0018 (  24): Offline_AC_output_sleep_time
+    AC voltage/power monitoring
+  0x0031 (  49): PV_Version
+    PV charging control
+  0x003B (  59): PV_charge_energy_total_H
+    PV charging control
+  0x003C (  60): PV_charge_energy_total_L
+    PV charging control
+  0x003D (  61): PV_charge_energy_today
+    PV charging control
+  0x004D (  77): smart_meter_power
+    Power-related configuration
+  0x004E (  78): total_DC_discharge_power
+    Power-related configuration
+  0x0191 ( 401): PV1_chart_start
+    PV charging control
+  0x02BD ( 701): PV2_chart_start
+    PV charging control
+
+STATUS_FLAGS (15 registers)
+----------------------------------------
+  0x0007 (   7): Buzzer_enable
+    Status flags and enable bits
+  0x0008 (   8): grid_auto_enable
+    Status flags and enable bits
+  0x0009 (   9): Car_charge_Vol_Exist_status
+    Status flags and enable bits
+  0x0009 (   9): BMS_user_status_BatHeat
+    Status flags and enable bits
+  0x0009 (   9): grid_immediate_enable
+    Status flags and enable bits
+  0x000A (  10): grid_custom_enable
+    Status flags and enable bits
+  0x000B (  11): charge_immediate_enable
+    Status flags and enable bits
+  0x000C (  12): charge_custom_enable
+    Status flags and enable bits
+  0x0025 (  37): main_BMS_user_status
+    Status flags and enable bits
+  0x0027 (  39): slave1_BMS_user_status
+    Status flags and enable bits
+  0x0029 (  41): slave2_BMS_user_status
+    Status flags and enable bits
+  0x002B (  43): slave3_BMS_user_status
+    Status flags and enable bits
+  0x002D (  45): slave4_BMS_user_status
+    Status flags and enable bits
+  0x0053 (  83): grid_charge_custom_enable_flag
+    Status flags and enable bits
+  0x0054 (  84): grid_charge_custom_current_status
+    Status flags and enable bits
+
+VERSION_INFO (2 registers)
+----------------------------------------
+  0x002F (  47): AC_Version
+    Firmware version information
+  0x0032 (  50): Panel_Version
+    Firmware version information

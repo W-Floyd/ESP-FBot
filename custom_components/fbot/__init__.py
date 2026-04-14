@@ -1,95 +1,142 @@
-"""The Fbot Battery Station integration."""
+"""
+The fbot integration - BrightEMS Bluetooth device support for Home Assistant.
+"""
 
 from __future__ import annotations
 
+import asyncio
 import logging
+from datetime import timedelta
+from typing import Any
 
+from homeassistant import config_entries
 from homeassistant.components import bluetooth
+from homeassistant.components.bluetooth import (
+    BluetoothServiceData,
+    async_get_bluetooth_manager,
+    async_scheduled_instances,
+)
+from homeassistant.components.bluetooth.const import DOMAIN as BLUETOOTH_DOMAIN
+from homeassistant.components.bluetooth.manager import BluetoothManager
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_ADDRESS, CONF_NAME, Platform
+from homeassistant.const import CONF_NAME, Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers.device_registry import DeviceEntry
+from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.entity_component import EntityComponent
+from homeassistant.helpers.typing import ConfigType
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.util import slugify
 
-from .catalog import lookup_profile
-from .const import CONF_SERVICE_UUIDS, DOMAIN
-from .coordinator import FbotCoordinator
+from .ble_handler import BLEHandler
+from .const import (
+    DOMAIN,
+    MANUFACTURER,
+    PLATFORMS,
+)
+from .coordinator import BrightEMSDataUpdateCoordinator
+from .product_catalog import (
+    CATEGORIES,
+    FEATURES,
+    PRODUCTS,
+    SPACE_ID,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = [
-    Platform.SENSOR,
+PLATFORMS: list[Platform] = [
     Platform.BINARY_SENSOR,
+    Platform.SENSOR,
     Platform.SWITCH,
-    Platform.SELECT,
+    Platform.VALVE,
 ]
 
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up Fbot from a config entry."""
-    service_uuids: list[str] = entry.data.get(CONF_SERVICE_UUIDS, [])
-    local_name: str = entry.data.get(CONF_NAME, "")
-
-    # Legacy entries (created before catalog support) only stored CONF_ADDRESS.
-    # Recover the service UUIDs and local name from the BLE scanner so we can
-    # look the device up in the catalog without forcing a re-pair.
-    if not service_uuids:
-        service_info = bluetooth.async_last_service_info(
-            hass, entry.data[CONF_ADDRESS], connectable=True
-        )
-        if service_info is not None:
-            service_uuids = list(service_info.service_uuids or [])
-            local_name = service_info.name or local_name
-            hass.config_entries.async_update_entry(
-                entry,
-                data={
-                    **entry.data,
-                    CONF_NAME: local_name,
-                    CONF_SERVICE_UUIDS: service_uuids,
-                },
-            )
-            _LOGGER.debug(
-                "Migrated legacy entry for %s: name=%r UUIDs=%s",
-                entry.data[CONF_ADDRESS],
-                local_name,
-                service_uuids,
-            )
-        else:
-            raise ConfigEntryNotReady(
-                f"Device {entry.data[CONF_ADDRESS]} not yet seen by BLE scanner; "
-                "will retry when an advertisement is received"
-            )
-
-    profile = lookup_profile(service_uuids, local_name)
-    if profile is None:
-        _LOGGER.error(
-            "Fbot device '%s' (UUIDs: %s) not found in product catalog — "
-            "re-pair the device or update the catalog.",
-            local_name,
-            service_uuids,
-        )
-        return False
-
-    coordinator = FbotCoordinator(
-        hass,
-        address=entry.data[CONF_ADDRESS],
-        name=entry.title,
-        profile=profile,
-    )
-
-    await coordinator.async_refresh()
-    await coordinator.async_start()
-
-    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
-    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    """Set up the fbot component from YAML."""
     return True
 
 
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Unload a config entry."""
-    coordinator: FbotCoordinator = hass.data[DOMAIN][entry.entry_id]
-    await coordinator.async_stop()
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Set up an entry for the fbot integration."""
+    _LOGGER.debug("Setting up fbot entry: %s", entry.title)
 
-    unloaded = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
-    if unloaded:
+    # Initialize the BLE handler
+    ble_handler = BLEHandler(hass)
+    hass.data.setdefault(DOMAIN, {})
+
+    # Create the coordinator
+    coordinator = BrightEMSDataUpdateCoordinator(
+        hass,
+        entry,
+        ble_handler,
+    )
+    hass.data[DOMAIN][entry.entry_id] = {
+        "coordinator": coordinator,
+        "ble_handler": ble_handler,
+    }
+
+    # Register the device
+    await _async_setup_device(hass, entry)
+
+    # Setup platforms
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+
+    # Refresh data on startup
+    await coordinator.async_config_entry_first_refresh()
+
+    # Schedule periodic updates
+    entry.async_on_unload(
+        hass.helpers.event.async_track_time_interval(
+            coordinator.async_refresh, timedelta(seconds=30)
+        )
+    )
+
+    return True
+
+
+async def _async_setup_device(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Set up the device in the device registry."""
+    device_registry = dr.async_get(hass)
+
+    device_info = dr.DeviceInfo(
+        identifiers={(DOMAIN, entry.entry_id)},
+        name=f"{entry.title} Device",
+        manufacturer=MANUFACTURER,
+        model=entry.title,
+        sw_version=entry.options.get(CONF_REGISTER_MAP, {}).get(
+            "firmware_version", "unknown"
+        ),
+    )
+
+    device_registry.async_get_or_create(
+        config_entry_id=entry.entry_id,
+        **device_info,
+    )
+
+
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Unload an entry."""
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+
+    if unload_ok:
         hass.data[DOMAIN].pop(entry.entry_id)
-    return unloaded
+
+    return unload_ok
+
+
+async def async_migrate_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Migrate old entries."""
+    if entry.version == 1:
+        # Migrate from version 1 to 2
+        _LOGGER.debug("Migrating entry from version %s", entry.version)
+
+        new_data = entry.data.copy()
+
+        if "ble_address" in new_data:
+            new_data["ble_address"] = entry.data["ble_address"].upper()
+
+        hass.config_entries.async_update_entry(entry, data=new_data, version=2)
+
+    return True

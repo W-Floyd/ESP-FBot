@@ -1,0 +1,32 @@
+[
+  {
+    "address": "1",
+    "name": "grid_function_pause",
+    "description": "Grid operation parameters"
+  },
+  {
+    "address": "1",
+    "name": "grid_charge_power_level_set",
+    "description": "Grid operation parameters"
+  },
+  {
+    "address": "7",
+    "name": "grid_discharge_onoff",
+    "description": "Grid operation parameters"
+  },
+  {
+    "address": "2",
+    "name": "Grid_charge_power",
+    "description": "Grid operation parameters"
+  },
+  {
+    "address": "33",
+    "name": "grid_immediate_power",
+    "description": "Grid operation parameters"
+  },
+  {
+    "address": "86",
+    "name": "grid_tie_out_power_max_set",
+    "description": "Grid operation parameters"
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "address": "3",
+    "name": "AI_energy_control",
+    "description": "Chart data start addresses"
+  },
+  {
+    "address": "101",
+    "name": "grid_charge_chart_start",
+    "description": "Chart data start addresses"
+  },
+  {
+    "address": "1001",
+    "name": "energy_chart_start",
+    "description": "Chart data start addresses"
+  }
+]

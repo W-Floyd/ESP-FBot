@@ -1,0 +1,12 @@
+[
+  {
+    "address": "47",
+    "name": "AC_Version",
+    "description": "Firmware version information"
+  },
+  {
+    "address": "50",
+    "name": "Panel_Version",
+    "description": "Firmware version information"
+  }
+]

@@ -1,0 +1,357 @@
+{
+  "53": {
+    "name": "deviceState1",
+    "category": "general",
+    "description": "General purpose register"
+  },
+  "54": {
+    "name": "deviceState2",
+    "category": "general",
+    "description": "General purpose register"
+  },
+  "75": {
+    "name": "City_No",
+    "category": "general",
+    "description": "General purpose register"
+  },
+  "76": {
+    "name": "systemState2",
+    "category": "general",
+    "description": "General purpose register"
+  },
+  "74": {
+    "name": "smartSocketRelayAndWiFi",
+    "category": "battery_bms",
+    "description": "Battery BMS status registers"
+  },
+  "83": {
+    "name": "grid_charge_custom_enable_flag",
+    "category": "status_flags",
+    "description": "Status flags and enable bits"
+  },
+  "84": {
+    "name": "LowBatteryNotification",
+    "category": "battery_bms",
+    "description": "Battery BMS status registers"
+  },
+  "0": {
+    "name": "DC_charge_power",
+    "category": "power_control",
+    "description": "Power-related configuration"
+  },
+  "1": {
+    "name": "grid_charge_power_level_set",
+    "category": "grid_operations",
+    "description": "Grid operation parameters"
+  },
+  "4": {
+    "name": "PV2_charge_power",
+    "category": "power_control",
+    "description": "PV charging control"
+  },
+  "5": {
+    "name": "DC_input_type",
+    "category": "general",
+    "description": "General purpose register"
+  },
+  "6": {
+    "name": "silent_charging_mode",
+    "category": "power_control",
+    "description": "PV charging control"
+  },
+  "8": {
+    "name": "grid_auto_enable",
+    "category": "status_flags",
+    "description": "Status flags and enable bits"
+  },
+  "9": {
+    "name": "grid_immediate_enable",
+    "category": "status_flags",
+    "description": "Status flags and enable bits"
+  },
+  "12": {
+    "name": "charge_custom_enable",
+    "category": "status_flags",
+    "description": "Status flags and enable bits"
+  },
+  "13": {
+    "name": "eco",
+    "category": "general",
+    "description": "General purpose register"
+  },
+  "10": {
+    "name": "smartSocketMeter_firmware_version_count",
+    "category": "battery_bms",
+    "description": "Battery BMS status registers"
+  },
+  "11": {
+    "name": "charge_immediate_enable",
+    "category": "status_flags",
+    "description": "Status flags and enable bits"
+  },
+  "7": {
+    "name": "Buzzer_enable",
+    "category": "status_flags",
+    "description": "Status flags and enable bits"
+  },
+  "2": {
+    "name": "AC_charge_power",
+    "category": "power_control",
+    "description": "AC charging power control"
+  },
+  "3": {
+    "name": "PV1_charge_power",
+    "category": "power_control",
+    "description": "PV charging control"
+  },
+  "78": {
+    "name": "total_DC_discharge_power",
+    "category": "power_control",
+    "description": "Power-related configuration"
+  },
+  "59": {
+    "name": "PV_charge_energy_total_H",
+    "category": "power_control",
+    "description": "PV charging control"
+  },
+  "60": {
+    "name": "PV_charge_energy_total_L",
+    "category": "power_control",
+    "description": "PV charging control"
+  },
+  "61": {
+    "name": "PV_charge_energy_today",
+    "category": "power_control",
+    "description": "PV charging control"
+  },
+  "26": {
+    "name": "discharge_soc_min_limit",
+    "category": "battery_bms",
+    "description": "Battery BMS status registers"
+  },
+  "31": {
+    "name": "ECO_SOC_min_limit",
+    "category": "battery_bms",
+    "description": "Battery BMS status registers"
+  },
+  "32": {
+    "name": "dod_deep_discharge",
+    "category": "battery_bms",
+    "description": "Battery BMS status registers"
+  },
+  "33": {
+    "name": "grid_immediate_power",
+    "category": "grid_operations",
+    "description": "Grid operation parameters"
+  },
+  "34": {
+    "name": "grid_immediate_time",
+    "category": "device_time",
+    "description": "Device time configuration"
+  },
+  "35": {
+    "name": "grid_immediate_EndSOC",
+    "category": "battery_bms",
+    "description": "Battery BMS status registers"
+  },
+  "37": {
+    "name": "charge_immediate_energySOC",
+    "category": "battery_bms",
+    "description": "Battery BMS status registers"
+  },
+  "39": {
+    "name": "slave1_BMS_user_status",
+    "category": "status_flags",
+    "description": "Status flags and enable bits"
+  },
+  "41": {
+    "name": "slave2_BMS_user_status",
+    "category": "status_flags",
+    "description": "Status flags and enable bits"
+  },
+  "43": {
+    "name": "slave3_BMS_user_status",
+    "category": "status_flags",
+    "description": "Status flags and enable bits"
+  },
+  "45": {
+    "name": "slave4_BMS_user_status",
+    "category": "status_flags",
+    "description": "Status flags and enable bits"
+  },
+  "97": {
+    "name": "device_time_year_month",
+    "category": "device_time",
+    "description": "Device time configuration"
+  },
+  "98": {
+    "name": "device_time_day_hour",
+    "category": "device_time",
+    "description": "Device time configuration"
+  },
+  "99": {
+    "name": "main_board_firmware_address_max",
+    "category": "firmware",
+    "description": "Firmware upgrade addresses"
+  },
+  "15": {
+    "name": "smart_meter_wifi",
+    "category": "general",
+    "description": "General purpose register"
+  },
+  "77": {
+    "name": "smart_meter_power",
+    "category": "power_control",
+    "description": "Power-related configuration"
+  },
+  "36": {
+    "name": "charge_immediate_time",
+    "category": "device_time",
+    "description": "Device time configuration"
+  },
+  "101": {
+    "name": "socket_firmware_address_min",
+    "category": "battery_bms",
+    "description": "Battery BMS status registers"
+  },
+  "401": {
+    "name": "PV1_chart_start",
+    "category": "power_control",
+    "description": "PV charging control"
+  },
+  "701": {
+    "name": "PV2_chart_start",
+    "category": "power_control",
+    "description": "PV charging control"
+  },
+  "1001": {
+    "name": "energy_chart_start",
+    "category": "chart_data",
+    "description": "Chart data start addresses"
+  },
+  "38": {
+    "name": "firmware_upgrade_type_pack_function_code",
+    "category": "firmware",
+    "description": "Firmware upgrade addresses"
+  },
+  "100": {
+    "name": "smartSocketMeter_firmware_version_function_code",
+    "category": "battery_bms",
+    "description": "Battery BMS status registers"
+  },
+  "102": {
+    "name": "smartSocketMeter_firmware_upgrade_type_pack_function_code",
+    "category": "battery_bms",
+    "description": "Battery BMS status registers"
+  },
+  "109": {
+    "name": "meter_firmware_address_max",
+    "category": "firmware",
+    "description": "Firmware upgrade addresses"
+  },
+  "104": {
+    "name": "socket_firmware_address_max",
+    "category": "battery_bms",
+    "description": "Battery BMS status registers"
+  },
+  "105": {
+    "name": "meter_firmware_address_min",
+    "category": "firmware",
+    "description": "Firmware upgrade addresses"
+  },
+  "70": {
+    "name": "grid_charge_appointment_time",
+    "category": "device_time",
+    "description": "Device time configuration"
+  },
+  "14": {
+    "name": "APP_control_remote_shutoff",
+    "category": "general",
+    "description": "General purpose register"
+  },
+  "21": {
+    "name": "DC_input_max_curr",
+    "category": "general",
+    "description": "General purpose register"
+  },
+  "23": {
+    "name": "DC_input_max_curr_set",
+    "category": "general",
+    "description": "General purpose register"
+  },
+  "24": {
+    "name": "Offline_AC_output_sleep_time",
+    "category": "power_control",
+    "description": "AC voltage/power monitoring"
+  },
+  "25": {
+    "name": "LCD_dim_time",
+    "category": "device_time",
+    "description": "Device time configuration"
+  },
+  "27": {
+    "name": "ups_charge_soc_max_limit",
+    "category": "battery_bms",
+    "description": "Battery BMS status registers"
+  },
+  "28": {
+    "name": "shutdown_wait_time",
+    "category": "device_time",
+    "description": "Device time configuration"
+  },
+  "29": {
+    "name": "USB_QC_PD_sleep_time",
+    "category": "device_time",
+    "description": "Device time configuration"
+  },
+  "30": {
+    "name": "DC_12V_output_sleep_time",
+    "category": "device_time",
+    "description": "Device time configuration"
+  },
+  "71": {
+    "name": "remain_charge_time",
+    "category": "device_time",
+    "description": "Device time configuration"
+  },
+  "72": {
+    "name": "remain_discharge_time",
+    "category": "device_time",
+    "description": "Device time configuration"
+  },
+  "86": {
+    "name": "grid_tie_out_power_max_set",
+    "category": "grid_operations",
+    "description": "Grid operation parameters"
+  },
+  "88": {
+    "name": "charge_priority",
+    "category": "general",
+    "description": "General purpose register"
+  },
+  "47": {
+    "name": "AC_Version",
+    "category": "version_info",
+    "description": "Firmware version information"
+  },
+  "48": {
+    "name": "BMS_Version",
+    "category": "battery_bms",
+    "description": "Battery BMS status registers"
+  },
+  "49": {
+    "name": "PV_Version",
+    "category": "power_control",
+    "description": "PV charging control"
+  },
+  "50": {
+    "name": "Panel_Version",
+    "category": "version_info",
+    "description": "Firmware version information"
+  },
+  "85": {
+    "name": "UPS_mode_set",
+    "category": "general",
+    "description": "General purpose register"
+  }
+}

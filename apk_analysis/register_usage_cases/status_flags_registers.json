@@ -1,0 +1,77 @@
+[
+  {
+    "address": "83",
+    "name": "grid_charge_custom_enable_flag",
+    "description": "Status flags and enable bits"
+  },
+  {
+    "address": "84",
+    "name": "grid_charge_custom_current_status",
+    "description": "Status flags and enable bits"
+  },
+  {
+    "address": "8",
+    "name": "grid_auto_enable",
+    "description": "Status flags and enable bits"
+  },
+  {
+    "address": "9",
+    "name": "Car_charge_Vol_Exist_status",
+    "description": "Status flags and enable bits"
+  },
+  {
+    "address": "9",
+    "name": "BMS_user_status_BatHeat",
+    "description": "Status flags and enable bits"
+  },
+  {
+    "address": "9",
+    "name": "grid_immediate_enable",
+    "description": "Status flags and enable bits"
+  },
+  {
+    "address": "12",
+    "name": "charge_custom_enable",
+    "description": "Status flags and enable bits"
+  },
+  {
+    "address": "10",
+    "name": "grid_custom_enable",
+    "description": "Status flags and enable bits"
+  },
+  {
+    "address": "11",
+    "name": "charge_immediate_enable",
+    "description": "Status flags and enable bits"
+  },
+  {
+    "address": "7",
+    "name": "Buzzer_enable",
+    "description": "Status flags and enable bits"
+  },
+  {
+    "address": "37",
+    "name": "main_BMS_user_status",
+    "description": "Status flags and enable bits"
+  },
+  {
+    "address": "39",
+    "name": "slave1_BMS_user_status",
+    "description": "Status flags and enable bits"
+  },
+  {
+    "address": "41",
+    "name": "slave2_BMS_user_status",
+    "description": "Status flags and enable bits"
+  },
+  {
+    "address": "43",
+    "name": "slave3_BMS_user_status",
+    "description": "Status flags and enable bits"
+  },
+  {
+    "address": "45",
+    "name": "slave4_BMS_user_status",
+    "description": "Status flags and enable bits"
+  }
+]

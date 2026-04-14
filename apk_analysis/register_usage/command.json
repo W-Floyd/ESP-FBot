@@ -1,0 +1,44 @@
+[
+  {
+    "address": -1,
+    "name": "GET_BLE_WRITE",
+    "context": "BLE command",
+    "line": 2040764,
+    "snippet": "GET_BLE_WRITE: \"GET_BLE_WRITE\""
+  },
+  {
+    "address": -1,
+    "name": "GET_BLE_HOLDING_REGISTER",
+    "context": "BLE command",
+    "line": 1269049,
+    "snippet": "GET_BLE_HOLDING_REGISTER: \"GET_BLE_HOLDING_REGISTER\""
+  },
+  {
+    "address": -1,
+    "name": "GET_BLE_HOLDING_REGISTER_SET",
+    "context": "BLE command",
+    "line": 1269049,
+    "snippet": "GET_BLE_HOLDING_REGISTER_SET: \"GET_BLE_HOLDING_REGISTER_SET\""
+  },
+  {
+    "address": -1,
+    "name": "GET_BLE_INPUT_REGISTER_SET",
+    "context": "BLE command",
+    "line": 1508472,
+    "snippet": "GET_BLE_INPUT_REGISTER_SET: \"GET_BLE_INPUT_REGISTER_SET\""
+  },
+  {
+    "address": -1,
+    "name": "GET_BLE_INPUT_REGISTER",
+    "context": "BLE command",
+    "line": 1347594,
+    "snippet": "GET_BLE_INPUT_REGISTER: \"GET_BLE_INPUT_REGISTER\""
+  },
+  {
+    "address": -1,
+    "name": "GET_BLE_INPUT_REGISTER_CHART",
+    "context": "BLE command",
+    "line": 1495479,
+    "snippet": "GET_BLE_INPUT_REGISTER_CHART: \"GET_BLE_INPUT_REGISTER_CHART\""
+  }
+]

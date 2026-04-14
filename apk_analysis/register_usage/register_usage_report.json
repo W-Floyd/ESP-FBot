@@ -1,0 +1,1091 @@
+{
+  "total_usages": 131,
+  "unique_registers": 74,
+  "bidirectional_registers": [
+    {
+      "address": 53,
+      "operations": [
+        "defined",
+        "array"
+      ]
+    },
+    {
+      "address": 4,
+      "operations": [
+        "defined",
+        "array"
+      ]
+    },
+    {
+      "address": 39,
+      "operations": [
+        "defined",
+        "array"
+      ]
+    },
+    {
+      "address": 15,
+      "operations": [
+        "defined",
+        "array"
+      ]
+    },
+    {
+      "address": 38,
+      "operations": [
+        "defined",
+        "array"
+      ]
+    }
+  ],
+  "usages": [
+    {
+      "address": 53,
+      "name": "deviceState1",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { deviceState1: 0x35 }"
+    },
+    {
+      "address": 54,
+      "name": "deviceState2",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { deviceState2: 0x36 }"
+    },
+    {
+      "address": 75,
+      "name": "systemState",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { systemState: 0x4b }"
+    },
+    {
+      "address": 76,
+      "name": "systemState2",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { systemState2: 0x4c }"
+    },
+    {
+      "address": 74,
+      "name": "smartSocketRelayAndWiFi",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { smartSocketRelayAndWiFi: 0x4a }"
+    },
+    {
+      "address": 83,
+      "name": "grid_charge_custom_enable_flag",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { grid_charge_custom_enable_flag: 0x53 }"
+    },
+    {
+      "address": 84,
+      "name": "grid_charge_custom_current_status",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { grid_charge_custom_current_status: 0x54 }"
+    },
+    {
+      "address": 0,
+      "name": "reset_to_factory",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { reset_to_factory: 0x0 }"
+    },
+    {
+      "address": 1,
+      "name": "debug_mode",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { debug_mode: 0x1 }"
+    },
+    {
+      "address": 4,
+      "name": "timeZone",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { timeZone: 0x4 }"
+    },
+    {
+      "address": 5,
+      "name": "DST_start_time",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { DST_start_time: 0x5 }"
+    },
+    {
+      "address": 6,
+      "name": "DST_end_time",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { DST_end_time: 0x6 }"
+    },
+    {
+      "address": 8,
+      "name": "Low_PV_Vol_Exist_status",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { Low_PV_Vol_Exist_status: 0x8 }"
+    },
+    {
+      "address": 9,
+      "name": "Low_PV_charge_onoff",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { Low_PV_charge_onoff: 0x9 }"
+    },
+    {
+      "address": 12,
+      "name": "High_PV_Vol_Exist_status",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { High_PV_Vol_Exist_status: 0xc }"
+    },
+    {
+      "address": 13,
+      "name": "High_PV_charge_onoff",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { High_PV_charge_onoff: 0xd }"
+    },
+    {
+      "address": 9,
+      "name": "Car_charge_Vol_Exist_status",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { Car_charge_Vol_Exist_status: 0x9 }"
+    },
+    {
+      "address": 10,
+      "name": "Car_charge_onoff",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { Car_charge_onoff: 0xa }"
+    },
+    {
+      "address": 11,
+      "name": "PV2_charge_onoff",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { PV2_charge_onoff: 0xb }"
+    },
+    {
+      "address": 5,
+      "name": "AC_Vol_Exist_status",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { AC_Vol_Exist_status: 0x5 }"
+    },
+    {
+      "address": 6,
+      "name": "AC_charge_onoff",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { AC_charge_onoff: 0x6 }"
+    },
+    {
+      "address": 7,
+      "name": "grid_discharge_onoff",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { grid_discharge_onoff: 0x7 }"
+    },
+    {
+      "address": 4,
+      "name": "AC_backup_output_onoff",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { AC_backup_output_onoff: 0x4 }"
+    },
+    {
+      "address": 11,
+      "name": "DC_usb_pd_led_wirelesscharge_Port_Out_onoff",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { DC_usb_pd_led_wirelesscharge_Port_Out_onoff: 0xb }"
+    },
+    {
+      "address": 4,
+      "name": "AC_BackUp_Output_KEY_onoff",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { AC_BackUp_Output_KEY_onoff: 0x4 }"
+    },
+    {
+      "address": 1,
+      "name": "grid_function_pause",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { grid_function_pause: 0x1 }"
+    },
+    {
+      "address": 2,
+      "name": "system_idle_set",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { system_idle_set: 0x2 }"
+    },
+    {
+      "address": 3,
+      "name": "AI_energy_control",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { AI_energy_control: 0x3 }"
+    },
+    {
+      "address": 0,
+      "name": "DC_charge_power",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { DC_charge_power: 0x0 }"
+    },
+    {
+      "address": 2,
+      "name": "Grid_charge_power",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { Grid_charge_power: 0x2 }"
+    },
+    {
+      "address": 3,
+      "name": "PV1_charge_power",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { PV1_charge_power: 0x3 }"
+    },
+    {
+      "address": 4,
+      "name": "PV2_charge_power",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { PV2_charge_power: 0x4 }"
+    },
+    {
+      "address": 5,
+      "name": "PV3_charge_power",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { PV3_charge_power: 0x5 }"
+    },
+    {
+      "address": 6,
+      "name": "PV4_charge_power",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { PV4_charge_power: 0x6 }"
+    },
+    {
+      "address": 7,
+      "name": "AC_grid_power",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { AC_grid_power: 0x7 }"
+    },
+    {
+      "address": 2,
+      "name": "AC_charge_power",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { AC_charge_power: 0x2 }"
+    },
+    {
+      "address": 12,
+      "name": "AC_output_power",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { AC_output_power: 0xc }"
+    },
+    {
+      "address": 78,
+      "name": "total_DC_discharge_power",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { total_DC_discharge_power: 0x4e }"
+    },
+    {
+      "address": 59,
+      "name": "PV_charge_energy_total_H",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { PV_charge_energy_total_H: 0x3b }"
+    },
+    {
+      "address": 60,
+      "name": "PV_charge_energy_total_L",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { PV_charge_energy_total_L: 0x3c }"
+    },
+    {
+      "address": 61,
+      "name": "PV_charge_energy_today",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { PV_charge_energy_today: 0x3d }"
+    },
+    {
+      "address": 26,
+      "name": "discharge_SOC_min_limit",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { discharge_SOC_min_limit: 0x1a }"
+    },
+    {
+      "address": 31,
+      "name": "main_BAT",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { main_BAT: 0x1f }"
+    },
+    {
+      "address": 32,
+      "name": "slave1_BAT",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { slave1_BAT: 0x20 }"
+    },
+    {
+      "address": 33,
+      "name": "slave2_BAT",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { slave2_BAT: 0x21 }"
+    },
+    {
+      "address": 34,
+      "name": "slave3_BAT",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { slave3_BAT: 0x22 }"
+    },
+    {
+      "address": 35,
+      "name": "slave4_BAT",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { slave4_BAT: 0x23 }"
+    },
+    {
+      "address": 37,
+      "name": "main_BMS_user_status",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { main_BMS_user_status: 0x25 }"
+    },
+    {
+      "address": 39,
+      "name": "slave1_BMS_user_status",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { slave1_BMS_user_status: 0x27 }"
+    },
+    {
+      "address": 41,
+      "name": "slave2_BMS_user_status",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { slave2_BMS_user_status: 0x29 }"
+    },
+    {
+      "address": 43,
+      "name": "slave3_BMS_user_status",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { slave3_BMS_user_status: 0x2b }"
+    },
+    {
+      "address": 45,
+      "name": "slave4_BMS_user_status",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { slave4_BMS_user_status: 0x2d }"
+    },
+    {
+      "address": 9,
+      "name": "BMS_user_status_BatHeat",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { BMS_user_status_BatHeat: 0x9 }"
+    },
+    {
+      "address": 97,
+      "name": "device_time_year_month",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { device_time_year_month: 0x61 }"
+    },
+    {
+      "address": 98,
+      "name": "device_time_day_hour",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { device_time_day_hour: 0x62 }"
+    },
+    {
+      "address": 99,
+      "name": "device_time_min_sec",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { device_time_min_sec: 0x63 }"
+    },
+    {
+      "address": 6,
+      "name": "silent_charging_mode",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { silent_charging_mode: 0x6 }"
+    },
+    {
+      "address": 15,
+      "name": "smart_meter_wifi",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { smart_meter_wifi: 0xf }"
+    },
+    {
+      "address": 77,
+      "name": "smart_meter_power",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { smart_meter_power: 0x4d }"
+    },
+    {
+      "address": 8,
+      "name": "grid_auto_enable",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { grid_auto_enable: 0x8 }"
+    },
+    {
+      "address": 9,
+      "name": "grid_immediate_enable",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { grid_immediate_enable: 0x9 }"
+    },
+    {
+      "address": 10,
+      "name": "grid_custom_enable",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { grid_custom_enable: 0xa }"
+    },
+    {
+      "address": 11,
+      "name": "charge_immediate_enable",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { charge_immediate_enable: 0xb }"
+    },
+    {
+      "address": 12,
+      "name": "charge_custom_enable",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { charge_custom_enable: 0xc }"
+    },
+    {
+      "address": 13,
+      "name": "eco",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { eco: 0xd }"
+    },
+    {
+      "address": 31,
+      "name": "ECO_SOC_min_limit",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { ECO_SOC_min_limit: 0x1f }"
+    },
+    {
+      "address": 33,
+      "name": "grid_immediate_power",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { grid_immediate_power: 0x21 }"
+    },
+    {
+      "address": 34,
+      "name": "grid_immediate_time",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { grid_immediate_time: 0x22 }"
+    },
+    {
+      "address": 35,
+      "name": "grid_immediate_EndSOC",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { grid_immediate_EndSOC: 0x23 }"
+    },
+    {
+      "address": 36,
+      "name": "charge_immediate_time",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { charge_immediate_time: 0x24 }"
+    },
+    {
+      "address": 37,
+      "name": "charge_immediate_energySOC",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { charge_immediate_energySOC: 0x25 }"
+    },
+    {
+      "address": 101,
+      "name": "grid_charge_chart_start",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { grid_charge_chart_start: 0x65 }"
+    },
+    {
+      "address": 401,
+      "name": "PV1_chart_start",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { PV1_chart_start: 0x191 }"
+    },
+    {
+      "address": 701,
+      "name": "PV2_chart_start",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { PV2_chart_start: 0x2bd }"
+    },
+    {
+      "address": 1001,
+      "name": "energy_chart_start",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { energy_chart_start: 0x3e9 }"
+    },
+    {
+      "address": 38,
+      "name": "firmware_function_code",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { firmware_function_code: 0x26 }"
+    },
+    {
+      "address": 10,
+      "name": "smartSocketMeter_firmware_version_count",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { smartSocketMeter_firmware_version_count: 0xa }"
+    },
+    {
+      "address": 100,
+      "name": "smartSocketMeter_firmware_version_address",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { smartSocketMeter_firmware_version_address: 0x64 }"
+    },
+    {
+      "address": 100,
+      "name": "smartSocketMeter_firmware_version_function_code",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { smartSocketMeter_firmware_version_function_code: 0x64 }"
+    },
+    {
+      "address": 101,
+      "name": "smartSocketMeter_firmware_upgrade_type_link_function_code",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { smartSocketMeter_firmware_upgrade_type_link_function_code: 0x65 }"
+    },
+    {
+      "address": 102,
+      "name": "smartSocketMeter_firmware_upgrade_type_pack_function_code",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { smartSocketMeter_firmware_upgrade_type_pack_function_code: 0x66 }"
+    },
+    {
+      "address": 38,
+      "name": "firmware_upgrade_type_pack_function_code",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { firmware_upgrade_type_pack_function_code: 0x26 }"
+    },
+    {
+      "address": 99,
+      "name": "main_board_firmware_address_max",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { main_board_firmware_address_max: 0x63 }"
+    },
+    {
+      "address": 109,
+      "name": "socket_meter_firmware_address_max",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { socket_meter_firmware_address_max: 0x6d }"
+    },
+    {
+      "address": 101,
+      "name": "socket_firmware_address_min",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { socket_firmware_address_min: 0x65 }"
+    },
+    {
+      "address": 104,
+      "name": "socket_firmware_address_max",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { socket_firmware_address_max: 0x68 }"
+    },
+    {
+      "address": 105,
+      "name": "meter_firmware_address_min",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { meter_firmware_address_min: 0x69 }"
+    },
+    {
+      "address": 109,
+      "name": "meter_firmware_address_max",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { meter_firmware_address_max: 0x6d }"
+    },
+    {
+      "address": 70,
+      "name": "grid_charge_appointment_time",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { grid_charge_appointment_time: 0x46 }"
+    },
+    {
+      "address": 1,
+      "name": "grid_charge_power_level_set",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { grid_charge_power_level_set: 0x1 }"
+    },
+    {
+      "address": 5,
+      "name": "DC_input_type",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { DC_input_type: 0x5 }"
+    },
+    {
+      "address": 6,
+      "name": "silent_charging_mode",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { silent_charging_mode: 0x6 }"
+    },
+    {
+      "address": 7,
+      "name": "Buzzer_enable",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { Buzzer_enable: 0x7 }"
+    },
+    {
+      "address": 14,
+      "name": "APP_control_remote_shutoff",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { APP_control_remote_shutoff: 0xe }"
+    },
+    {
+      "address": 21,
+      "name": "DC_input_max_curr",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { DC_input_max_curr: 0x15 }"
+    },
+    {
+      "address": 23,
+      "name": "DC_input_max_curr_set",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { DC_input_max_curr_set: 0x17 }"
+    },
+    {
+      "address": 24,
+      "name": "Offline_AC_output_sleep_time",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { Offline_AC_output_sleep_time: 0x18 }"
+    },
+    {
+      "address": 25,
+      "name": "LCD_dim_time",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { LCD_dim_time: 0x19 }"
+    },
+    {
+      "address": 26,
+      "name": "discharge_soc_min_limit",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { discharge_soc_min_limit: 0x1a }"
+    },
+    {
+      "address": 27,
+      "name": "ups_charge_soc_max_limit",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { ups_charge_soc_max_limit: 0x1b }"
+    },
+    {
+      "address": 28,
+      "name": "shutdown_wait_time",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { shutdown_wait_time: 0x1c }"
+    },
+    {
+      "address": 29,
+      "name": "USB_QC_PD_sleep_time",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { USB_QC_PD_sleep_time: 0x1d }"
+    },
+    {
+      "address": 30,
+      "name": "DC_12V_output_sleep_time",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { DC_12V_output_sleep_time: 0x1e }"
+    },
+    {
+      "address": 32,
+      "name": "dod_deep_discharge",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { dod_deep_discharge: 0x20 }"
+    },
+    {
+      "address": 71,
+      "name": "remain_charge_time",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { remain_charge_time: 0x47 }"
+    },
+    {
+      "address": 72,
+      "name": "remain_discharge_time",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { remain_discharge_time: 0x48 }"
+    },
+    {
+      "address": 86,
+      "name": "grid_tie_out_power_max_set",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { grid_tie_out_power_max_set: 0x56 }"
+    },
+    {
+      "address": 88,
+      "name": "charge_priority",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { charge_priority: 0x58 }"
+    },
+    {
+      "address": 47,
+      "name": "AC_Version",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { AC_Version: 0x2f }"
+    },
+    {
+      "address": 48,
+      "name": "BMS_Version",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { BMS_Version: 0x30 }"
+    },
+    {
+      "address": 49,
+      "name": "PV_Version",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { PV_Version: 0x31 }"
+    },
+    {
+      "address": 50,
+      "name": "Panel_Version",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { Panel_Version: 0x32 }"
+    },
+    {
+      "address": 75,
+      "name": "City_No",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { City_No: 0x4b }"
+    },
+    {
+      "address": 84,
+      "name": "LowBatteryNotification",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { LowBatteryNotification: 0x54 }"
+    },
+    {
+      "address": 85,
+      "name": "UPS_mode_set",
+      "operation": "defined",
+      "context": "Wu constants",
+      "line": 25775,
+      "snippet": "const Wu = { UPS_mode_set: 0x55 }"
+    },
+    {
+      "address": 15,
+      "name": "smart_socket_power_arr",
+      "operation": "array",
+      "context": "Wu constants array",
+      "line": 25775,
+      "snippet": "Wu.smart_socket_power_arr = [15]"
+    },
+    {
+      "address": 0,
+      "name": "charge_custom_enable_arr",
+      "operation": "array",
+      "context": "Wu constants array",
+      "line": 25775,
+      "snippet": "Wu.charge_custom_enable_arr = [0]"
+    },
+    {
+      "address": 4,
+      "name": "grid_custom_enable_arr",
+      "operation": "array",
+      "context": "Wu constants array",
+      "line": 25775,
+      "snippet": "Wu.grid_custom_enable_arr = [4]"
+    },
+    {
+      "address": 52,
+      "name": "grid_custom_startEnd_time_arr",
+      "operation": "array",
+      "context": "Wu constants array",
+      "line": 25775,
+      "snippet": "Wu.grid_custom_startEnd_time_arr = [52]"
+    },
+    {
+      "address": 53,
+      "name": "grid_custom_powerPeriod_arr",
+      "operation": "array",
+      "context": "Wu constants array",
+      "line": 25775,
+      "snippet": "Wu.grid_custom_powerPeriod_arr = [53]"
+    },
+    {
+      "address": 68,
+      "name": "grid_discharge_end_soc_arr",
+      "operation": "array",
+      "context": "Wu constants array",
+      "line": 25775,
+      "snippet": "Wu.grid_discharge_end_soc_arr = [68]"
+    },
+    {
+      "address": 38,
+      "name": "charge_custom_startEnd_time_arr",
+      "operation": "array",
+      "context": "Wu constants array",
+      "line": 25775,
+      "snippet": "Wu.charge_custom_startEnd_time_arr = [38]"
+    },
+    {
+      "address": 39,
+      "name": "charge_custom_energySOC_arr",
+      "operation": "array",
+      "context": "Wu constants array",
+      "line": 25775,
+      "snippet": "Wu.charge_custom_energySOC_arr = [39]"
+    },
+    {
+      "address": 40,
+      "name": "charge_custom_period_arr",
+      "operation": "array",
+      "context": "Wu constants array",
+      "line": 25775,
+      "snippet": "Wu.charge_custom_period_arr = [40]"
+    },
+    {
+      "address": 80,
+      "name": "socket_meter_bind_arr",
+      "operation": "array",
+      "context": "Wu constants array",
+      "line": 25775,
+      "snippet": "Wu.socket_meter_bind_arr = [80]"
+    },
+    {
+      "address": -1,
+      "name": "GET_BLE_WRITE",
+      "operation": "command",
+      "context": "BLE command",
+      "line": 2040764,
+      "snippet": "GET_BLE_WRITE: \"GET_BLE_WRITE\""
+    },
+    {
+      "address": -1,
+      "name": "GET_BLE_HOLDING_REGISTER",
+      "operation": "command",
+      "context": "BLE command",
+      "line": 1269049,
+      "snippet": "GET_BLE_HOLDING_REGISTER: \"GET_BLE_HOLDING_REGISTER\""
+    },
+    {
+      "address": -1,
+      "name": "GET_BLE_HOLDING_REGISTER_SET",
+      "operation": "command",
+      "context": "BLE command",
+      "line": 1269049,
+      "snippet": "GET_BLE_HOLDING_REGISTER_SET: \"GET_BLE_HOLDING_REGISTER_SET\""
+    },
+    {
+      "address": -1,
+      "name": "GET_BLE_INPUT_REGISTER_SET",
+      "operation": "command",
+      "context": "BLE command",
+      "line": 1508472,
+      "snippet": "GET_BLE_INPUT_REGISTER_SET: \"GET_BLE_INPUT_REGISTER_SET\""
+    },
+    {
+      "address": -1,
+      "name": "GET_BLE_INPUT_REGISTER",
+      "operation": "command",
+      "context": "BLE command",
+      "line": 1347594,
+      "snippet": "GET_BLE_INPUT_REGISTER: \"GET_BLE_INPUT_REGISTER\""
+    },
+    {
+      "address": -1,
+      "name": "GET_BLE_INPUT_REGISTER_CHART",
+      "operation": "command",
+      "context": "BLE command",
+      "line": 1495479,
+      "snippet": "GET_BLE_INPUT_REGISTER_CHART: \"GET_BLE_INPUT_REGISTER_CHART\""
+    }
+  ]
+}

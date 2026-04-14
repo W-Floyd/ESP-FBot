@@ -1,99 +1,185 @@
-"""Config flow for the Fbot integration."""
+"""Config flow for the fbot Bluetooth integration."""
 
 from __future__ import annotations
 
+import logging
+from typing import Any
+
 import voluptuous as vol
+from homeassistant import config_entries
+from homeassistant.components import bluetooth
 from homeassistant.components.bluetooth import (
-    BluetoothServiceInfoBleak,
-    async_discovered_service_info,
+    BluetoothServiceData,
+    async_discovered_entries,
+    async_uuid_service_data,
 )
-from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
-from homeassistant.const import CONF_ADDRESS, CONF_NAME
+from homeassistant.components.bluetooth.manager import BluetoothManager
+from homeassistant.components.bluetooth.util import mac_bytes_to_address
+from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
+from homeassistant.const import CONF_ADDRESS
+from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers.typing import ConfigType
 
-from .const import CONF_SERVICE_UUIDS, DOMAIN
-from .product_catalog import PRODUCTS
+from .const import BLE_SERVICE_UUIDS, DOMAIN
+from .product_catalog import CATEGORIES, PRODUCTS
 
-# All product UUIDs known to the catalog (upper-case for case-insensitive matching).
-_PRODUCT_UUIDS: frozenset[str] = frozenset(
-    key.split("_", 1)[0].upper() for key in PRODUCTS
+_LOGGER = logging.getLogger(__name__)
+
+# Configuration schema for manual entry
+CONFIG_SCHEMA = vol.Schema(
+    {
+        vol.Required("ble_address"): str,
+        vol.Required("ble_name", default=""): str,
+    }
 )
 
-
-def _is_fbot_device(service_uuids: list[str]) -> bool:
-    """Return True if any advertised UUID belongs to a known catalog product."""
-    return any(uuid.upper() in _PRODUCT_UUIDS for uuid in service_uuids)
+# Options schema for runtime configuration
+OPTIONS_SCHEMA = vol.Schema(
+    {
+        vol.Optional("poll_interval", default=30): vol.All(
+            vol.Coerce(int), vol.Range(min=5, max=300)
+        ),
+        vol.Optional("enable_updates", default=True): bool,
+    }
+)
 
 
 class FbotConfigFlow(ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for Fbot."""
+    """Handle a config flow for BrightEMS fbot."""
 
     VERSION = 1
 
     def __init__(self) -> None:
-        self._discovery_info: BluetoothServiceInfoBleak | None = None
+        """Initialize the config flow."""
+        self._ble_service_data: dict[str, dict] = {}
+        self._discovered_devices: list[dict] = []
 
-    async def async_step_bluetooth(
-        self, discovery_info: BluetoothServiceInfoBleak
-    ) -> ConfigFlowResult:
-        """Handle a Bluetooth discovery."""
-        await self.async_set_unique_id(discovery_info.address)
+    async def async_step_user(self, user_input: dict[str, Any] | None = None) -> Any:
+        """Handle the initial config flow step."""
+        errors = {}
+
+        if user_input is not None:
+            address = user_input.get(CONF_ADDRESS, "")
+
+            # Verify the address is valid
+            if not address or ":" not in address:
+                errors["base"] = "invalid_address"
+            else:
+                # Check if device is already configured
+                await self.async_set_unique_id(address)
+                self._abort_if_unique_id_configured()
+
+                # Create entry
+                return self.async_create_entry(
+                    title=f"BrightEMS Device {address}",
+                    data=user_input,
+                )
+
+        return self.async_show_form(
+            step_id="user",
+            data_schema=CONFIG_SCHEMA,
+            errors=errors,
+        )
+
+    async def async_step_bluetooth(self, discovery_info: dict) -> Any:
+        """Handle Bluetooth discovery."""
+        _LOGGER.info("Discovered BrightEMS device via Bluetooth: %s", discovery_info)
+
+        service_uuids = discovery_info.get("service_uuids", [])
+
+        # Check if this is a BrightEMS device
+        if not any(
+            uuid.lower() in [uuid.lower() for uuid in BLE_SERVICE_UUIDS]
+            for uuid in service_uuids
+        ):
+            return self.async_abort(reason="not_brightems_device")
+
+        address = discovery_info.get("address", "")
+
+        if not address:
+            return self.async_abort(reason="no_address")
+
+        # Check if device is already configured
+        await self.async_set_unique_id(address)
         self._abort_if_unique_id_configured()
-        self._discovery_info = discovery_info
-        return await self.async_step_bluetooth_confirm()
+
+        # Store discovery info
+        self._ble_service_data[address] = discovery_info
+
+        # Show form for user confirmation
+        return self.async_show_form(
+            step_id="bluetooth",
+            data_schema=vol.Schema(
+                {
+                    vol.Required(
+                        "ble_name", default=discovery_info.get("name", "")
+                    ): str,
+                }
+            ),
+        )
 
     async def async_step_bluetooth_confirm(
-        self, user_input: dict | None = None
-    ) -> ConfigFlowResult:
+        self, user_input: dict[str, Any] | None = None
+    ) -> Any:
         """Confirm Bluetooth discovery."""
-        assert self._discovery_info is not None
-        if user_input is not None:
-            title = self._discovery_info.name or self._discovery_info.address
-            return self.async_create_entry(
-                title=title,
-                data={
-                    CONF_ADDRESS: self._discovery_info.address,
-                    CONF_NAME: self._discovery_info.name or "",
-                    CONF_SERVICE_UUIDS: list(self._discovery_info.service_uuids or []),
-                },
-            )
-        self._set_confirm_only()
-        name = self._discovery_info.name or self._discovery_info.address
-        self.context["title_placeholders"] = {"name": name}
-        return self.async_show_form(
-            step_id="bluetooth_confirm",
-            description_placeholders={"name": name},
-        )
-
-    async def async_step_user(self, user_input: dict | None = None) -> ConfigFlowResult:
-        """Handle a user-initiated flow."""
-        discovered_map = {
-            info.address: info
-            for info in async_discovered_service_info(self.hass, connectable=True)
-            if _is_fbot_device(list(info.service_uuids or []))
-        }
+        errors = {}
 
         if user_input is not None:
-            address = user_input[CONF_ADDRESS].upper()
-            await self.async_set_unique_id(address)
-            self._abort_if_unique_id_configured()
-            info = discovered_map.get(address)
+            address = self._ble_service_data.get("address", "")
+
             return self.async_create_entry(
-                title=info.name if info else address,
+                title=f"BrightEMS Device {address}",
                 data={
                     CONF_ADDRESS: address,
-                    CONF_NAME: (info.name or "") if info else "",
-                    CONF_SERVICE_UUIDS: list(info.service_uuids or []) if info else [],
+                    "ble_name": user_input.get("ble_name", ""),
                 },
             )
 
-        discovered = {
-            info.address: f"{info.name or info.address} ({info.address})"
-            for info in discovered_map.values()
-        }
+        # Show confirmation form
+        address = self._ble_service_data.get("address", "")
+        ble_name = self._ble_service_data.get("name", "")
 
-        schema = (
-            vol.Schema({vol.Required(CONF_ADDRESS): vol.In(discovered)})
-            if discovered
-            else vol.Schema({vol.Required(CONF_ADDRESS): str})
+        return self.async_show_form(
+            step_id="bluetooth_confirm",
+            data_schema=vol.Schema(
+                {
+                    vol.Required("ble_name", default=ble_name): str,
+                }
+            ),
+            description_placeholders={
+                "address": address,
+                "ble_name": ble_name,
+            },
         )
-        return self.async_show_form(step_id="user", data_schema=schema)
+
+
+class FbotOptionsFlowHandler(OptionsFlow):
+    """Handle options for BrightEMS fbot."""
+
+    async def async_step_init(self, user_input: dict[str, Any] | None = None) -> Any:
+        """Handle the initial options flow step."""
+        errors = {}
+
+        if user_input is not None:
+            # Save updated options
+            return self.async_create_entry(
+                title="",
+                data=user_input,
+            )
+
+        # Use existing options or defaults
+        options = self.config_entry.options
+
+        return self.async_show_form(
+            step_id="init",
+            data_schema=OPTIONS_SCHEMA.extend(
+                {
+                    vol.Optional(
+                        "ble_address", default=options.get("ble_address", "")
+                    ): str,
+                    vol.Optional("ble_name", default=options.get("ble_name", "")): str,
+                }
+            ),
+            errors=errors,
+        )

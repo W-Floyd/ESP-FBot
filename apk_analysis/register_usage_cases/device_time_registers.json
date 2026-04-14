@@ -1,0 +1,77 @@
+[
+  {
+    "address": "4",
+    "name": "timeZone",
+    "description": "Device time configuration"
+  },
+  {
+    "address": "5",
+    "name": "DST_start_time",
+    "description": "Device time configuration"
+  },
+  {
+    "address": "6",
+    "name": "DST_end_time",
+    "description": "Device time configuration"
+  },
+  {
+    "address": "34",
+    "name": "grid_immediate_time",
+    "description": "Device time configuration"
+  },
+  {
+    "address": "97",
+    "name": "device_time_year_month",
+    "description": "Device time configuration"
+  },
+  {
+    "address": "98",
+    "name": "device_time_day_hour",
+    "description": "Device time configuration"
+  },
+  {
+    "address": "99",
+    "name": "device_time_min_sec",
+    "description": "Device time configuration"
+  },
+  {
+    "address": "36",
+    "name": "charge_immediate_time",
+    "description": "Device time configuration"
+  },
+  {
+    "address": "70",
+    "name": "grid_charge_appointment_time",
+    "description": "Device time configuration"
+  },
+  {
+    "address": "25",
+    "name": "LCD_dim_time",
+    "description": "Device time configuration"
+  },
+  {
+    "address": "28",
+    "name": "shutdown_wait_time",
+    "description": "Device time configuration"
+  },
+  {
+    "address": "29",
+    "name": "USB_QC_PD_sleep_time",
+    "description": "Device time configuration"
+  },
+  {
+    "address": "30",
+    "name": "DC_12V_output_sleep_time",
+    "description": "Device time configuration"
+  },
+  {
+    "address": "71",
+    "name": "remain_charge_time",
+    "description": "Device time configuration"
+  },
+  {
+    "address": "72",
+    "name": "remain_discharge_time",
+    "description": "Device time configuration"
+  }
+]
