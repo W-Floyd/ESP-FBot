@@ -247,6 +247,11 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
         self._cancel_status_poll: Callable[[], None] | None = None
         self._cancel_settings_poll: Callable[[], None] | None = None
         self._connecting = False
+        self._last_disconnect_time: float = 0.0
+        self._backoff_exponent: int = 1
+        self._connection_cooldown_seconds: float = 5.0
+        self._backoff_multiplier: float = 2.0
+        self._max_backoff_seconds: float = 60.0
 
     @property
     def address(self) -> str:
@@ -267,6 +272,9 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
     async def async_stop(self) -> None:
         """Disconnect and cancel all callbacks."""
         self._cancel_all_callbacks()
+        self._last_disconnect_time = 0.0
+        self._backoff_exponent = 1
+        self._connection_cooldown_seconds = 5.0
         if self._client:
             try:
                 await self._client.disconnect()
@@ -311,7 +319,8 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
             )
             self._client = client
             await client.start_notify(NOTIFY_CHAR_UUID, self._async_on_notification)
-            _LOGGER.info("Connected to Fbot %s", self._address)
+            # Reset backoff on successful connection
+            self._reset_backoff()
 
             # Cancel any pending advertisement listener now that we're connected
             if self._cancel_bluetooth_callback is not None:
@@ -320,11 +329,29 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
 
             # Fetch initial status and settings, then start periodic polling
             await self._async_send_status_request()
-            await asyncio.sleep(0.5)
             await self._async_send_settings_request()
             self._start_polls()
+            # Reset backoff on successful initialization
+            self._reset_backoff()
         except Exception as ex:
-            _LOGGER.warning("Failed to connect to Fbot %s: %s", self._address, ex)
+            # Apply exponential backoff before re-registering for connection
+            self._backoff_exponent = min(
+                self._backoff_exponent + 1,
+                int(self._max_backoff_seconds / self._connection_cooldown_seconds) + 1,
+            )
+            backoff_seconds = min(
+                self._connection_cooldown_seconds
+                * self._backoff_multiplier ** (self._backoff_exponent - 1),
+                self._max_backoff_seconds,
+            )
+            _LOGGER.warning(
+                "Failed to connect to Fbot %s after %d attempts: %s. Retrying in %.1fs",
+                self._address,
+                self._backoff_exponent,
+                ex,
+                backoff_seconds,
+            )
+            self._connection_cooldown_seconds = backoff_seconds
             self._register_advertisement_listener()
         finally:
             self._connecting = False
@@ -335,15 +362,23 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
         _LOGGER.warning("Fbot %s disconnected", self._address)
         self._client = None
         self._stop_polls()
-        # Clear data so all entities transition to unavailable
+        # Record disconnect time and apply backoff
+        self._last_disconnect_time = asyncio.get_event_loop().time()
         self._parsed_data = {}
         self.async_set_updated_data(self._parsed_data)
-        self._register_advertisement_listener()
+        # Only register for reconnection if backoff period has passed
+        if self._should_attempt_reconnect():
+            self._register_advertisement_listener()
 
     def _register_advertisement_listener(self) -> None:
-        """Register a BLE advertisement callback to reconnect when device is seen."""
+        """Register a BLE advertisement listener to reconnect when device is seen."""
         if self._cancel_bluetooth_callback is not None:
             return  # Already registered
+        if not self._should_attempt_reconnect():
+            _LOGGER.debug(
+                "Fbot %s: skipping reconnection (backoff not expired)", self._address
+            )
+            return
         self._cancel_bluetooth_callback = bluetooth.async_register_callback(
             self.hass,
             self._async_on_ble_advertisement,
@@ -359,8 +394,12 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
         """Device was seen in a BLE scan — attempt reconnection."""
         if self.is_connected or self._connecting:
             return
+        # Reset backoff when device is seen
+        self._connection_cooldown_seconds = 5.0
         _LOGGER.debug("Fbot %s advertisement seen, attempting reconnect", self._address)
         self.hass.async_create_task(self._async_connect(service_info.device))
+        # Reset backoff when device is seen
+        self._reset_backoff()
 
     # ------------------------------------------------------------------
     # Polling
@@ -396,6 +435,18 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
     def _schedule_settings_poll(self, _now=None) -> None:
         self.hass.async_create_task(self._async_send_settings_request())
 
+    def _should_attempt_reconnect(self) -> bool:
+        """Check if backoff period has passed since last disconnect."""
+        if self._last_disconnect_time == 0.0:
+            return True
+        elapsed = asyncio.get_event_loop().time() - self._last_disconnect_time
+        return elapsed >= self._connection_cooldown_seconds
+
+    def _reset_backoff(self) -> None:
+        """Reset backoff state on successful connection."""
+        self._backoff_exponent = 1
+        self._connection_cooldown_seconds = 5.0
+
     async def _async_send_status_request(self) -> None:
         if not self.is_connected:
             return
@@ -405,6 +456,8 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
             )
         except Exception as ex:
             _LOGGER.debug("Error sending status request: %s", ex)
+            # Reconnect on error
+            self._async_on_disconnect(None)
 
     async def _async_send_settings_request(self) -> None:
         if not self.is_connected:
@@ -415,6 +468,8 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
             )
         except Exception as ex:
             _LOGGER.debug("Error sending settings request: %s", ex)
+            # Reconnect on error
+            self._async_on_disconnect(None)
 
     # ------------------------------------------------------------------
     # Notification parsing
@@ -447,14 +502,28 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
             await self._client.write_gatt_char(  # type: ignore[union-attr]
                 WRITE_CHAR_UUID, _build_write_command(reg, value), response=False
             )
+            # Small delay to let device process the command before next poll
+            await asyncio.sleep(0.2)
         except Exception as ex:
             raise HomeAssistantError(f"Failed to send command: {ex}") from ex
 
-        # Reset the status poll timer so the device gets a full interval to
-        # stabilise before the next request arrives (mirrors ESPHome behaviour).
-        self._stop_polls()
-        self._start_polls()
+    async def _async_send_settings_refresh_internal(self) -> None:
+        """Internal method for settings refresh without connection check."""
+        if not self.is_connected:
+            return
+        try:
+            await self._client.write_gatt_char(  # type: ignore[union-attr]
+                WRITE_CHAR_UUID, _build_read_settings(), response=False
+            )
+        except Exception as ex:
+            # Reconnect on error
+            self._async_on_disconnect(None)
 
     async def async_send_settings_refresh(self) -> None:
         """Request a fresh settings read from the device."""
-        await self._async_send_settings_request()
+        if self.is_connected:
+            await self._async_send_settings_refresh_internal()
+        else:
+            _LOGGER.warning(
+                "Cannot refresh settings: Fbot %s is not connected", self._address
+            )
