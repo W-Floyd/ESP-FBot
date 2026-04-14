@@ -266,8 +266,44 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
     # ------------------------------------------------------------------
 
     async def async_start(self) -> None:
-        """Attempt initial connection. Called after coordinator setup."""
-        await self._async_connect_if_available()
+        """Attempt initial connection with retry loop for robust connection."""
+        max_retries = 3
+        initial_retry_interval = 2.0
+        for attempt in range(1, max_retries + 1):
+            ble_device = bluetooth.async_ble_device_from_address(
+                self.hass, self._address, connectable=True
+            )
+            if ble_device is not None:
+                try:
+                    await self._async_connect(ble_device)
+                    if self.is_connected:
+                        _LOGGER.info(
+                            "Successfully connected to Fbot %s on attempt %d",
+                            self._address,
+                            attempt,
+                        )
+                        return
+                except Exception as ex:
+                    _LOGGER.error(
+                        "Attempt %d failed to connect to Fbot %s: %s",
+                        attempt,
+                        self._address,
+                        ex,
+                    )
+            else:
+                _LOGGER.warning(
+                    "Attempt %d: Fbot %s not in range, waiting for advertisement",
+                    attempt,
+                    self._address,
+                )
+            if attempt < max_retries:
+                await asyncio.sleep(initial_retry_interval)
+        _LOGGER.error(
+            "Failed to connect to Fbot %s after %d attempts. "
+            "Device may be out of range or busy.",
+            self._address,
+            max_retries,
+        )
 
     async def async_stop(self) -> None:
         """Disconnect and cancel all callbacks."""
@@ -303,11 +339,17 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
             self._register_advertisement_listener()
 
     async def _async_connect(self, ble_device) -> None:
+        """Connect to the Fbot device with explicit timeout handling."""
         if self._connecting or self.is_connected:
             return
+
         self._connecting = True
+        connect_timeout = 10.0  # Increased from default to give device more time
+
         try:
-            _LOGGER.debug("Connecting to Fbot %s", self._address)
+            _LOGGER.debug(
+                "Connecting to Fbot %s (timeout: %.1fs)", self._address, connect_timeout
+            )
             client = await establish_connection(
                 BleakClientWithServiceCache,
                 ble_device,
@@ -316,9 +358,12 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
                 ble_device_callback=lambda: bluetooth.async_ble_device_from_address(
                     self.hass, self._address, connectable=True
                 ),
+                timeout=connect_timeout,
             )
             self._client = client
             await client.start_notify(NOTIFY_CHAR_UUID, self._async_on_notification)
+            _LOGGER.info("Connected to Fbot %s", self._address)
+
             # Reset backoff on successful connection
             self._reset_backoff()
 
@@ -331,30 +376,72 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
             await self._async_send_status_request()
             await self._async_send_settings_request()
             self._start_polls()
-            # Reset backoff on successful initialization
-            self._reset_backoff()
-        except Exception as ex:
-            # Apply exponential backoff before re-registering for connection
-            self._backoff_exponent = min(
-                self._backoff_exponent + 1,
-                int(self._max_backoff_seconds / self._connection_cooldown_seconds) + 1,
+            _LOGGER.debug(
+                "Fbot %s: initial status/settings requests sent", self._address
             )
-            backoff_seconds = min(
-                self._connection_cooldown_seconds
-                * self._backoff_multiplier ** (self._backoff_exponent - 1),
-                self._max_backoff_seconds,
-            )
-            _LOGGER.warning(
-                "Failed to connect to Fbot %s after %d attempts: %s. Retrying in %.1fs",
+        except asyncio.TimeoutError as ex:
+            _LOGGER.error(
+                "Connection to Fbot %s timed out after %.1fs. Device may be out of range.",
                 self._address,
-                self._backoff_exponent,
-                ex,
-                backoff_seconds,
+                connect_timeout,
             )
-            self._connection_cooldown_seconds = backoff_seconds
-            self._register_advertisement_listener()
+            self._handle_connection_failure(ex, "timeout")
+        except Exception as ex:
+            # Check for GATT connection failure specifically
+            error_str = str(ex).lower()
+            if (
+                "esp_gatt_conn_fail_establish" in error_str
+                or "connection failed to establish" in error_str
+            ):
+                _LOGGER.error(
+                    "GATT connection error for Fbot %s: %s. Device may be busy or out of range.",
+                    self._address,
+                    ex,
+                )
+                self._handle_connection_failure(ex, "gatt_fail")
+            else:
+                _LOGGER.error("Failed to connect to Fbot %s: %s", self._address, ex)
+                self._handle_connection_failure(ex, "other")
         finally:
             self._connecting = False
+
+    def _handle_connection_failure(self, error: Exception, error_type: str) -> None:
+        """Handle connection failure with appropriate backoff."""
+        # Apply exponential backoff before re-registering for connection
+        self._backoff_exponent = min(
+            self._backoff_exponent + 1,
+            int(self._max_backoff_seconds / self._connection_cooldown_seconds) + 1,
+        )
+        backoff_seconds = min(
+            self._connection_cooldown_seconds
+            * self._backoff_multiplier ** (self._backoff_exponent - 1),
+            self._max_backoff_seconds,
+        )
+        self._connection_cooldown_seconds = backoff_seconds
+
+        if error_type == "gatt_fail":
+            # For GATT failures, use longer backoff and log more details
+            self._connection_cooldown_seconds = max(backoff_seconds, 15.0)
+            _LOGGER.warning(
+                "GATT connection failure for Fbot %s after %d attempts. "
+                "Next retry in %.1fs. Original error: %s",
+                self._address,
+                self._backoff_exponent,
+                self._connection_cooldown_seconds,
+                error,
+            )
+        else:
+            _LOGGER.warning(
+                "Failed to connect to Fbot %s after %d attempts (type: %s). "
+                "Next retry in %.1fs. Original error: %s",
+                self._address,
+                self._backoff_exponent,
+                error_type,
+                backoff_seconds,
+                error,
+            )
+
+        self._register_advertisement_listener()
 
     @callback
     def _async_on_disconnect(self, _client: BleakClient) -> None:
@@ -515,7 +602,7 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
             await self._client.write_gatt_char(  # type: ignore[union-attr]
                 WRITE_CHAR_UUID, _build_read_settings(), response=False
             )
-        except Exception as ex:
+        except Exception:
             # Reconnect on error
             self._async_on_disconnect(None)
 
