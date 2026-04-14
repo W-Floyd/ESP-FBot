@@ -1,6 +1,0 @@
-In PulseView, it looks like the ideal settings is to capture at 1MHz. 500KHz or lower could work but the file size at 1MHz is already plenty small and I want to make sure the decoder works perfectly.
-
-The decoder is: UART
-- 115200 baud, 8, N, 1.
-- LSB-First
-- ASCII

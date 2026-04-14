@@ -255,3 +255,4 @@ apk_analysis/decompiled/
 apk_analysis/extracted/
 *.apk
 *.xapk
+*.pyc
