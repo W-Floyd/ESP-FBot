@@ -305,14 +305,28 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
             await client.start_notify(NOTIFY_CHAR_UUID, self._async_on_notification)
             _LOGGER.info("Connected to Fbot %s", self._address)
 
-            if self._cancel_bluetooth_callback is not None:
+            # Only cancel the advertisement listener if we are still connected.
+            # If _async_on_disconnect already fired during start_notify, it will
+            # have registered a new listener — cancelling it here would leave us
+            # with no way to ever reconnect.
+            if self.is_connected and self._cancel_bluetooth_callback is not None:
                 self._cancel_bluetooth_callback()
                 self._cancel_bluetooth_callback = None
 
             await self._async_send_status_request()
             await asyncio.sleep(0.5)
             await self._async_send_settings_request()
-            self._start_polls()
+
+            # Connection may have dropped during the setup requests above.
+            # If so, _async_on_disconnect has already handled cleanup and
+            # re-registration; starting polls here would be pointless and
+            # calling _register_advertisement_listener would be a no-op (guard
+            # already set), but we must not clobber the listener by returning
+            # without starting polls when still connected.
+            if self.is_connected:
+                self._start_polls()
+            else:
+                self._register_advertisement_listener()
         except Exception as ex:
             _LOGGER.warning("Failed to connect to Fbot %s: %s", self._address, ex)
             self._register_advertisement_listener()
