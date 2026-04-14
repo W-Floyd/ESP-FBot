@@ -247,7 +247,11 @@ ModelManifest.xml
 .fake/
 
 ### VisualStudioCode ###
-.vscode/* 
+.vscode/*
 
 **/.history
 
+apk_analysis/decompiled/
+apk_analysis/extracted/
+*.apk
+*.xapk

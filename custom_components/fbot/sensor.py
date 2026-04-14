@@ -1,4 +1,5 @@
 """Sensor platform for the Fbot integration."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -24,29 +25,31 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
     DOMAIN,
+    KEY_AC_IN_FREQUENCY,
+    KEY_AC_INPUT_POWER,
+    KEY_AC_OUT_FREQUENCY,
+    KEY_AC_OUT_VOLTAGE,
+    KEY_AC_VERSION,
     KEY_BATTERY_PERCENT,
     KEY_BATTERY_S1_PERCENT,
     KEY_BATTERY_S2_PERCENT,
-    KEY_AC_INPUT_POWER,
+    KEY_BMS_VERSION,
+    KEY_CHARGE_LEVEL,
     KEY_DC_INPUT_POWER,
     KEY_INPUT_POWER,
     KEY_OUTPUT_POWER,
-    KEY_SYSTEM_POWER,
-    KEY_TOTAL_POWER,
+    KEY_PANEL_VERSION,
+    KEY_PV_VERSION,
     KEY_REMAINING_TIME,
-    KEY_CHARGE_LEVEL,
-    KEY_AC_OUT_VOLTAGE,
-    KEY_AC_OUT_FREQUENCY,
-    KEY_AC_IN_FREQUENCY,
+    KEY_SYSTEM_POWER,
     KEY_TIME_TO_FULL,
+    KEY_TOTAL_POWER,
     KEY_USB_A1_POWER,
     KEY_USB_A2_POWER,
     KEY_USB_C1_POWER,
     KEY_USB_C2_POWER,
     KEY_USB_C3_POWER,
     KEY_USB_C4_POWER,
-    KEY_THRESHOLD_CHARGE,
-    KEY_THRESHOLD_DISCHARGE,
 )
 from .coordinator import FbotCoordinator
 
@@ -54,7 +57,11 @@ from .coordinator import FbotCoordinator
 @dataclass(frozen=True, kw_only=True)
 class FbotSensorEntityDescription(SensorEntityDescription):
     """Extends SensorEntityDescription with the coordinator data key."""
+
     data_key: str
+    # Set of device_type strings for which this entity should be created.
+    # None means the entity is created for every device type.
+    supported_device_types: frozenset[str] | None = None
 
 
 SENSOR_DESCRIPTIONS: tuple[FbotSensorEntityDescription, ...] = (
@@ -227,18 +234,28 @@ SENSOR_DESCRIPTIONS: tuple[FbotSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
     ),
     FbotSensorEntityDescription(
-        key="threshold_charge",
-        data_key=KEY_THRESHOLD_CHARGE,
-        name="Charge Threshold",
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
+        key="ac_version",
+        data_key=KEY_AC_VERSION,
+        name="AC Firmware Version",
+        entity_registry_enabled_default=False,
     ),
     FbotSensorEntityDescription(
-        key="threshold_discharge",
-        data_key=KEY_THRESHOLD_DISCHARGE,
-        name="Discharge Threshold",
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
+        key="bms_version",
+        data_key=KEY_BMS_VERSION,
+        name="BMS Firmware Version",
+        entity_registry_enabled_default=False,
+    ),
+    FbotSensorEntityDescription(
+        key="pv_version",
+        data_key=KEY_PV_VERSION,
+        name="PV Firmware Version",
+        entity_registry_enabled_default=False,
+    ),
+    FbotSensorEntityDescription(
+        key="panel_version",
+        data_key=KEY_PANEL_VERSION,
+        name="Panel Firmware Version",
+        entity_registry_enabled_default=False,
     ),
 )
 
@@ -249,8 +266,12 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     coordinator: FbotCoordinator = hass.data[DOMAIN][entry.entry_id]
+    device_type = coordinator.profile.device_type
     async_add_entities(
-        FbotSensor(coordinator, description) for description in SENSOR_DESCRIPTIONS
+        FbotSensor(coordinator, description)
+        for description in SENSOR_DESCRIPTIONS
+        if description.supported_device_types is None
+        or device_type in description.supported_device_types
     )
 
 
@@ -276,9 +297,8 @@ class FbotSensor(CoordinatorEntity[FbotCoordinator], SensorEntity):
 
     @property
     def available(self) -> bool:
-        return (
-            super().available
-            and self.entity_description.data_key in (self.coordinator.data or {})
+        return super().available and self.entity_description.data_key in (
+            self.coordinator.data or {}
         )
 
     @property

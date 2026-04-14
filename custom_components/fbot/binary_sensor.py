@@ -1,4 +1,5 @@
 """Binary sensor platform for the Fbot integration."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -18,10 +19,6 @@ from .const import (
     DOMAIN,
     KEY_BATTERY_S1_CONNECTED,
     KEY_BATTERY_S2_CONNECTED,
-    KEY_USB_ACTIVE,
-    KEY_DC_ACTIVE,
-    KEY_AC_ACTIVE,
-    KEY_LIGHT_ACTIVE,
 )
 from .coordinator import FbotCoordinator
 
@@ -29,6 +26,7 @@ from .coordinator import FbotCoordinator
 @dataclass(frozen=True, kw_only=True)
 class FbotBinarySensorEntityDescription(BinarySensorEntityDescription):
     """Extends BinarySensorEntityDescription with the coordinator data key."""
+
     data_key: str
 
 
@@ -45,30 +43,6 @@ BINARY_SENSOR_DESCRIPTIONS: tuple[FbotBinarySensorEntityDescription, ...] = (
         name="Battery S2 Connected",
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
     ),
-    FbotBinarySensorEntityDescription(
-        key="usb_active",
-        data_key=KEY_USB_ACTIVE,
-        name="USB Active",
-        device_class=BinarySensorDeviceClass.POWER,
-    ),
-    FbotBinarySensorEntityDescription(
-        key="dc_active",
-        data_key=KEY_DC_ACTIVE,
-        name="DC Active",
-        device_class=BinarySensorDeviceClass.POWER,
-    ),
-    FbotBinarySensorEntityDescription(
-        key="ac_active",
-        data_key=KEY_AC_ACTIVE,
-        name="AC Active",
-        device_class=BinarySensorDeviceClass.POWER,
-    ),
-    FbotBinarySensorEntityDescription(
-        key="light_active",
-        data_key=KEY_LIGHT_ACTIVE,
-        name="Light Active",
-        device_class=BinarySensorDeviceClass.LIGHT,
-    ),
 )
 
 
@@ -82,7 +56,6 @@ async def async_setup_entry(
         FbotBinarySensor(coordinator, description)
         for description in BINARY_SENSOR_DESCRIPTIONS
     ]
-    # Add the special connectivity sensor that tracks the BLE connection itself
     entities.append(FbotConnectivitySensor(coordinator))
     async_add_entities(entities)
 
@@ -109,9 +82,8 @@ class FbotBinarySensor(CoordinatorEntity[FbotCoordinator], BinarySensorEntity):
 
     @property
     def available(self) -> bool:
-        return (
-            super().available
-            and self.entity_description.data_key in (self.coordinator.data or {})
+        return super().available and self.entity_description.data_key in (
+            self.coordinator.data or {}
         )
 
     @property
@@ -125,7 +97,7 @@ class FbotConnectivitySensor(CoordinatorEntity[FbotCoordinator], BinarySensorEnt
     _attr_has_entity_name = True
     _attr_name = "Connected"
     _attr_device_class = BinarySensorDeviceClass.CONNECTIVITY
-    _attr_available = True  # Always available — its job is to show connection state
+    _attr_available = True
 
     def __init__(self, coordinator: FbotCoordinator) -> None:
         super().__init__(coordinator)

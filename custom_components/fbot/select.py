@@ -1,55 +1,22 @@
 """Select platform for the Fbot integration."""
+
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-
-from homeassistant.components.select import SelectEntity, SelectEntityDescription
+from homeassistant.components.select import SelectEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import (
-    DOMAIN,
-    REG_LIGHT_CONTROL,
-    REG_AC_CHARGE_LIMIT,
-    KEY_LIGHT_MODE,
-    KEY_AC_CHARGE_LIMIT,
-    LIGHT_MODES,
-    AC_CHARGE_LIMITS,
-)
+from .const import DOMAIN
 from .coordinator import FbotCoordinator
+from .product_catalog import FEATURES
 
 
-@dataclass(frozen=True, kw_only=True)
-class FbotSelectEntityDescription(SelectEntityDescription):
-    """Extends SelectEntityDescription with Fbot-specific fields."""
-    data_key: str
-    register: int
-    options: list[str] = field(default_factory=list)
-    # If True, the register value is option_index + 1 (1-based); otherwise 0-based.
-    one_based: bool = False
-
-
-SELECT_DESCRIPTIONS: tuple[FbotSelectEntityDescription, ...] = (
-    FbotSelectEntityDescription(
-        key="light_mode",
-        data_key=KEY_LIGHT_MODE,
-        name="Light Mode",
-        options=LIGHT_MODES,
-        register=REG_LIGHT_CONTROL,
-        one_based=False,
-    ),
-    FbotSelectEntityDescription(
-        key="ac_charge_limit",
-        data_key=KEY_AC_CHARGE_LIMIT,
-        name="AC Charge Limit",
-        options=AC_CHARGE_LIMITS,
-        register=REG_AC_CHARGE_LIMIT,
-        one_based=True,
-    ),
-)
+def _option_label(value: int, unit: str) -> str:
+    """Format a data_list integer as the string shown in the UI."""
+    return f"{value} {unit}".strip() if unit else str(value)
 
 
 async def async_setup_entry(
@@ -58,26 +25,39 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     coordinator: FbotCoordinator = hass.data[DOMAIN][entry.entry_id]
+    features = FEATURES.get(
+        coordinator.profile.product_id, {"states": [], "settings": []}
+    )
+    count = coordinator.profile.modbus_count
     async_add_entities(
-        FbotSelect(coordinator, description) for description in SELECT_DESCRIPTIONS
+        FbotCatalogSelect(coordinator, setting)
+        for setting in features["settings"]
+        if (
+            setting["data_state"]
+            and len(setting["data_list"]) > 1
+            and setting.get("holding_index") is not None
+            and setting["holding_index"] < count
+        )
     )
 
 
-class FbotSelect(CoordinatorEntity[FbotCoordinator], SelectEntity):
-    """A select entity for Fbot device options."""
+class FbotCatalogSelect(CoordinatorEntity[FbotCoordinator], SelectEntity):
+    """A select entity for a catalog-defined writable setting."""
 
     _attr_has_entity_name = True
-    entity_description: FbotSelectEntityDescription
 
-    def __init__(
-        self,
-        coordinator: FbotCoordinator,
-        description: FbotSelectEntityDescription,
-    ) -> None:
+    def __init__(self, coordinator: FbotCoordinator, setting: dict) -> None:
         super().__init__(coordinator)
-        self.entity_description = description
-        self._attr_unique_id = f"{coordinator.address}_{description.key}"
-        self._attr_options = description.options
+        self._setting = setting
+        self._data_key = f"h_{setting['holding_index']}"
+        unit = setting.get("unit", "")
+        options = [_option_label(v, unit) for v in setting["data_list"]]
+        # Bidirectional maps between display label and raw register value.
+        self._value_to_option: dict[int, str] = dict(zip(setting["data_list"], options))
+        self._option_to_value: dict[str, int] = dict(zip(options, setting["data_list"]))
+        self._attr_name = setting["function_name"]
+        self._attr_options = options
+        self._attr_unique_id = f"{coordinator.address}_setting_{setting['id']}"
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, coordinator.address)},
             name="Fbot Battery Station",
@@ -86,22 +66,18 @@ class FbotSelect(CoordinatorEntity[FbotCoordinator], SelectEntity):
 
     @property
     def available(self) -> bool:
-        return (
-            super().available
-            and self.entity_description.data_key in (self.coordinator.data or {})
-        )
+        return super().available and self._data_key in (self.coordinator.data or {})
 
     @property
     def current_option(self) -> str | None:
-        return (self.coordinator.data or {}).get(self.entity_description.data_key)
+        raw = (self.coordinator.data or {}).get(self._data_key)
+        if raw is None:
+            return None
+        return self._value_to_option.get(raw)
 
     async def async_select_option(self, option: str) -> None:
-        desc = self.entity_description
-        try:
-            idx = desc.options.index(option)
-        except ValueError:
+        value = self._option_to_value.get(option)
+        if value is None:
             return
-        reg_value = idx + 1 if desc.one_based else idx
-        await self.coordinator.async_send_command(desc.register, reg_value)
-        # Fetch updated settings to confirm the change
+        await self.coordinator.async_send_command(self._setting["holding_index"], value)
         await self.coordinator.async_send_settings_refresh()
