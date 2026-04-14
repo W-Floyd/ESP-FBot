@@ -116,6 +116,26 @@ def _build_write_command(address: int, reg: int, value: int) -> bytes:
     )
 
 
+def _build_write_v1(address: int, start_reg: int, values: list[int]) -> bytes:
+    """Write one or more consecutive holding registers (protocol v1+).
+
+    Matches the APK's getWriteModbusCRCLowFront_new():
+      Gn(addr, 0x06, [start_reg, count_hi, count_lo, val1_hi, val1_lo, ...], false)
+
+    Unlike the v0 frame the register address is encoded as a single byte and
+    the count of registers follows as two bytes.  All known register numbers
+    for this device family fit within one byte.
+    """
+    count = len(values)
+    payload = bytearray(
+        [address, 0x06, start_reg & 0xFF, (count >> 8) & 0xFF, count & 0xFF]
+    )
+    for v in values:
+        payload.append((v >> 8) & 0xFF)
+        payload.append(v & 0xFF)
+    return _frame(bytes(payload))
+
+
 def _get_reg(data: bytes, idx: int) -> int:
     """Extract a 16-bit big-endian register value. Registers start at byte offset 6."""
     offset = 6 + idx * 2
@@ -451,17 +471,56 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
     # ------------------------------------------------------------------
 
     async def async_send_command(self, reg: int, value: int) -> None:
-        """Send a write-single-register command to the device."""
+        """Write a single holding register.
+
+        Protocol v1+ devices use a different frame layout (register as 1 byte
+        + explicit count) even for single-register writes; v0 devices use the
+        classic Modbus write-single-register frame.
+        """
         if not self.is_connected:
             raise HomeAssistantError("Fbot is not connected")
+        addr = self._profile.modbus_address
+        if self._profile.protocol_version >= 1:
+            frame = _build_write_v1(addr, reg, [value])
+        else:
+            frame = _build_write_command(addr, reg, value)
         try:
             await self._client.write_gatt_char(  # type: ignore[union-attr]
-                WRITE_CHAR_UUID,
-                _build_write_command(self._profile.modbus_address, reg, value),
-                response=False,
+                WRITE_CHAR_UUID, frame, response=False
             )
         except Exception as ex:
             raise HomeAssistantError(f"Failed to send command: {ex}") from ex
+
+        self._stop_polls()
+        self._start_polls()
+
+    async def async_send_multi_command(
+        self, start_reg: int, values: list[int]
+    ) -> None:
+        """Write multiple consecutive holding registers.
+
+        Protocol v1+ devices support a single multi-register frame.  On v0
+        devices the registers are written sequentially one at a time.
+        """
+        if not self.is_connected:
+            raise HomeAssistantError("Fbot is not connected")
+        addr = self._profile.modbus_address
+        try:
+            if self._profile.protocol_version >= 1:
+                await self._client.write_gatt_char(  # type: ignore[union-attr]
+                    WRITE_CHAR_UUID,
+                    _build_write_v1(addr, start_reg, values),
+                    response=False,
+                )
+            else:
+                for offset, value in enumerate(values):
+                    await self._client.write_gatt_char(  # type: ignore[union-attr]
+                        WRITE_CHAR_UUID,
+                        _build_write_command(addr, start_reg + offset, value),
+                        response=False,
+                    )
+        except Exception as ex:
+            raise HomeAssistantError(f"Failed to send multi-register command: {ex}") from ex
 
         self._stop_polls()
         self._start_polls()
