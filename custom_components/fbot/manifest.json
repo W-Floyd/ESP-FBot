@@ -610,7 +610,8 @@
   "codeowners": [],
   "config_flow": true,
   "dependencies": [
-    "bluetooth"
+    "bluetooth",
+    "bluetooth_adapters"
   ],
   "documentation": "https://github.com/W-Floyd/ESP-FBot",
   "integration_type": "device",

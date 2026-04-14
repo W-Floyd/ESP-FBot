@@ -16,7 +16,7 @@ from homeassistant.components.bluetooth import (
     BluetoothScanningMode,
     BluetoothServiceInfoBleak,
 )
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import CALLBACK_TYPE, HomeAssistant, callback
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
@@ -245,9 +245,10 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
         self._profile = profile
         self._client: BleakClient | None = None
         self._parsed_data: dict = {}
-        self._cancel_bt_cb: Callable[[], None] | None = None
-        self._cancel_input_poll: Callable[[], None] | None = None
-        self._cancel_holding_poll: Callable[[], None] | None = None
+        self._cancel_bt_cb: CALLBACK_TYPE | None = None
+        self._cancel_unavailable_cb: CALLBACK_TYPE | None = None
+        self._cancel_input_poll: CALLBACK_TYPE | None = None
+        self._cancel_holding_poll: CALLBACK_TYPE | None = None
         self._connecting = False
 
     @property
@@ -267,10 +268,37 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
     # ------------------------------------------------------------------
 
     async def async_start(self) -> None:
+        """Register BLE callbacks and attempt initial connection.
+
+        Both the advertisement callback and the unavailability tracker are
+        registered once here and stay active for the lifetime of the entry.
+        The advertisement callback triggers reconnection whenever the device
+        is seen in range; the unavailability tracker clears state when the
+        BLE scanner has not seen the device for an extended period.
+        """
+        self._cancel_bt_cb = bluetooth.async_register_callback(
+            self.hass,
+            self._on_ble_advertisement,
+            BluetoothCallbackMatcher(address=self._address, connectable=True),
+            BluetoothScanningMode.ACTIVE,
+        )
+        self._cancel_unavailable_cb = bluetooth.async_track_unavailable(
+            self.hass,
+            self._on_bt_unavailable,
+            self._address,
+            connectable=True,
+        )
         await self._async_connect_if_available()
 
     async def async_stop(self) -> None:
-        self._cancel_all()
+        """Unregister callbacks, stop polls, and disconnect."""
+        if self._cancel_bt_cb:
+            self._cancel_bt_cb()
+            self._cancel_bt_cb = None
+        if self._cancel_unavailable_cb:
+            self._cancel_unavailable_cb()
+            self._cancel_unavailable_cb = None
+        self._stop_polls()
         if self._client:
             try:
                 await self._client.disconnect()
@@ -293,7 +321,6 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
             await self._async_connect(ble_device)
         else:
             _LOGGER.debug("Fbot %s not in range, waiting for advertisement", self._address)
-            self._register_adv_listener()
 
     async def _async_connect(self, ble_device) -> None:
         if self._connecting or self.is_connected:
@@ -314,50 +341,63 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
             await client.start_notify(NOTIFY_CHAR_UUID, self._on_notification)
             _LOGGER.info("Connected to Fbot %s", self._address)
 
-            if self.is_connected and self._cancel_bt_cb is not None:
-                self._cancel_bt_cb()
-                self._cancel_bt_cb = None
-
             await self._send_input_request()
             await asyncio.sleep(0.5)
             await self._send_holding_request()
 
             if self.is_connected:
                 self._start_polls()
-            else:
-                self._register_adv_listener()
         except Exception as ex:
             _LOGGER.warning("Failed to connect to Fbot %s: %s", self._address, ex)
-            self._register_adv_listener()
         finally:
             self._connecting = False
 
     @callback
     def _on_disconnect(self, _client: BleakClient) -> None:
+        """Handle an unexpected BLE disconnection.
+
+        Polls are stopped and data is cleared so entities show as unavailable.
+        The always-active advertisement callback will trigger a reconnect the
+        next time the device is seen in range.
+        """
         _LOGGER.warning("Fbot %s disconnected", self._address)
         self._client = None
         self._stop_polls()
         self._parsed_data = {}
         self.async_set_updated_data(self._parsed_data)
-        self._register_adv_listener()
-
-    def _register_adv_listener(self) -> None:
-        if self._cancel_bt_cb is not None:
-            return
-        self._cancel_bt_cb = bluetooth.async_register_callback(
-            self.hass,
-            self._on_ble_advertisement,
-            BluetoothCallbackMatcher(address=self._address),
-            BluetoothScanningMode.ACTIVE,
-        )
 
     @callback
     def _on_ble_advertisement(
         self, service_info: BluetoothServiceInfoBleak, change: BluetoothChange
     ) -> None:
+        """Handle a BLE advertisement — reconnect if currently disconnected."""
         if self.is_connected or self._connecting:
             return
         self.hass.async_create_task(self._async_connect(service_info.device))
+
+    @callback
+    def _on_bt_unavailable(self, service_info: BluetoothServiceInfoBleak) -> None:
+        """Handle the device going out of BLE scanner range.
+
+        The scanner has not seen this address for an extended period; clear all
+        state so entities report unavailable, and forcefully close any stale
+        connection.
+        """
+        _LOGGER.debug("Fbot %s is unavailable (out of range)", self._address)
+        self._stop_polls()
+        self._parsed_data = {}
+        self.async_set_updated_data(self._parsed_data)
+        if self._client:
+            # Fire-and-forget: if it fails the connection was already dead.
+            self.hass.async_create_task(self._async_force_disconnect())
+
+    async def _async_force_disconnect(self) -> None:
+        if self._client:
+            try:
+                await self._client.disconnect()
+            except Exception:
+                pass
+            self._client = None
 
     # ------------------------------------------------------------------
     # Polling
@@ -386,12 +426,6 @@ class FbotCoordinator(DataUpdateCoordinator[dict]):
         if self._cancel_holding_poll:
             self._cancel_holding_poll()
             self._cancel_holding_poll = None
-
-    def _cancel_all(self) -> None:
-        self._stop_polls()
-        if self._cancel_bt_cb:
-            self._cancel_bt_cb()
-            self._cancel_bt_cb = None
 
     # ------------------------------------------------------------------
     # Raw BLE I/O
