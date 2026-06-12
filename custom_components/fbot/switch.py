@@ -118,17 +118,11 @@ class FbotSwitch(CoordinatorEntity[FbotCoordinator], SwitchEntity):
         return (self.coordinator.data or {}).get(self.entity_description.data_key)
 
     async def async_turn_on(self, **kwargs) -> None:
+        if self.is_on:
+            return
         await self.coordinator.async_send_command(self.entity_description.register, 1)
-        # Optimistic update while waiting for next notification
-        self._attr_is_on = True
-        self.async_write_ha_state()
 
     async def async_turn_off(self, **kwargs) -> None:
+        if self.is_on is False:
+            return
         await self.coordinator.async_send_command(self.entity_description.register, 0)
-        self._attr_is_on = False
-        self.async_write_ha_state()
-
-    def _handle_coordinator_update(self) -> None:
-        """Clear optimistic state when real data arrives."""
-        self._attr_is_on = None
-        super()._handle_coordinator_update()
